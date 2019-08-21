@@ -1,2 +1,3 @@
-# execute-web
-The web based frontend application for Execute.
+# Execute Website
+
+The website based frontend application for the Execute project.
