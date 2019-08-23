@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test Application Logic</title>
+</head>
+<body>
+    <script>
+        const url = "http://localhost:3000/graphql";
+
+        const opts = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        };
+
+        const saveCookie = (username, password) =>
+            document.cookie = "user=" + JSON.stringify({username: username, password: password});
+
+        const getCookie = () =>
+            document.cookie ? JSON.parse(document.cookie.split('=')[1]) : null;
+        
+        const removeCookie = () =>
+            document.cookie = "user=nothing;expires=Thu, 01 Jan 1970 00:00:01 GMT"; // Set expired
+
+        const getUser = () => {
+            let user = getCookie();
+            let output = user != null ? user.username + " " + user.password : "No user logged in";
+            document.querySelector("#userDetails").innerHTML = output; // UI - for testing only
+        }
+        
+        const login = () => {
+            // Populated from UI
+            const LoginQuery = `
+                query GetUserData {
+                    getUserData(
+                        username: "${document.signIn.username.value}",
+                        password: "${document.signIn.password.value}") {
+                            username,
+                        }
+                }
+            `;
+
+            opts.body = JSON.stringify({ query: LoginQuery })
+
+            fetch(url, opts)
+            .then(res => res.json())
+            .then((res) => {
+                let data = res.data.getUserData;
+
+                if (res.data.getUserData != null) {
+                    console.log("User " + res.data.getUserData.username + " signed in");
+                    saveCookie(document.signIn.username.value, document.signIn.password.value); // Populated from UI
+                } else {
+                    console.log("Incorrect sign in details");
+                    removeCookie();
+                }
+            })
+            .catch((err) => {
+                console.log("An error occured, please see below:");
+                console.error(err);
+            });
+
+            return false; // Do not refresh page
+        }
+    </script>
+
+    <form name="signIn" onSubmit="return login()">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password">
+        <input type="submit" value="Sign In">
+    </form>
+
+    <button onClick="getUser()">Check User Signed In</button>
+    <p id="userDetails"></p>
+
+    <button onClick="removeCookie()">SignOut</button>
+
+</body>
+</html>
