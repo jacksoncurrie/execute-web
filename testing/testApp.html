@@ -5,25 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Test Application Logic</title>
-    <script src="./applicationLogic.js"></script>
+    <script src="../app/applicationLogic.js"></script>
 </head>
 <body>
+    <hr>
     <h1>Login</h1>
     <form name="signIn">
         <label for="username">Username:</label>
         <input type="text" name="username">
         <label for="password">Password:</label>
         <input type="password" name="password">
+
         <input type="button" value="Sign In" onClick="login(
             document.signIn.username.value, 
             document.signIn.password.value
         )">
     </form>
     <button onClick="getUser()">Check User Signed In</button>
-    <button onClick="removeCookie()">SignOut</button>
+    <button onClick="logout()">Sign Out</button>
     <p id="userDetails"></p>
-
     <hr>
+
     <h1>Calendar</h1>
     <form name="calendarItems">
         <label for="calendarItemID">Calendar Item ID:</label>
@@ -36,7 +38,6 @@
         <label for="endDate">End Time:</label>
         <input type="date" name="endDate">
         <input type="time" name="endTime">
-
         <input type="button" value="Add Item" onClick="addCalendarItem(
             document.calendarItems.title.value,
             document.calendarItems.startDate.value,
@@ -56,12 +57,11 @@
             document.calendarItems.calendarItemID.value
         )">
     </form>
-
     <button onClick="getCalendarItems()">Get Calendar Items</button>
-    <div id="calendarItems"></div>
-
+    <p id="calendarItems"></p>
     <hr>
-    <h1>Weekly Shedule</h1>
+
+    <h1>Weekly Schedule</h1>
     <form name="scheduleItems">
         <label for="sheduleItemID">Schedule Item ID:</label>
         <input type="text" name="scheduleItemID">
@@ -73,7 +73,6 @@
         <input type="text" name="startTime">
         <label for="endTime">End Time:</label>
         <input type="text" name="endTime">
-
         <input type="button" value="Add Item" onClick="addScheduleItem(
             document.scheduleItems.title.value,
             document.scheduleItems.category.value,
@@ -91,11 +90,10 @@
             document.scheduleItems.scheduleItemID.value
         )">
     </form>
-
     <button onClick="getScheduleItems()">Get Schedule Items</button>
-    <div id="scheduleItems"></div>
-
+    <p id="scheduleItems"></p>
     <hr>
+
     <h1>Task List</h1>
     <form name="tasks">
         <label for="taskID">Task ID:</label>
@@ -109,7 +107,6 @@
         <label for="startDate">Start Time:</label>
         <input type="date" name="startDate">
         <input type="time" name="startTime">
-
         <input type="button" value="Add Item" onClick="addTask(
             document.tasks.title.value,
             document.tasks.priority.value,
@@ -127,9 +124,16 @@
             document.tasks.taskID.value
         )">
     </form>
-
     <button onClick="getTasks()">Get Tasks</button>
-    <div id="tasks"></div>
+    <p id="tasks"></p>
+    <hr>
+
+    <h1>Get Data</h1>
+    <!-- <button onClick="getTimes('2019-09-02','2019-09-08', 10)">Get Available Times</button>
+    <p id="availableTimes"></p> -->
+    <button onClick="getWeekData('2019-09-02','2019-09-08')">Get Week Data</button>
+    <p id="weekData"></p>
+    <hr>
 
     <script>
         // UI Scripts
@@ -167,6 +171,38 @@
             for (let i of data)
                 output += `<p>${i.taskID} - ${i.title}</p>`;
             document.querySelector("#tasks").innerHTML = output;
+        }
+
+        // let getTimes = async (startTime, endTime, estimatedTime) => {
+        //     let data = await getThisWeeksSchedule(startTime, endTime);
+        //     let startDate = new Date(startTime);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        //     let endDate = new Date(endTime);
+        //     let currentDate = startDate;
+        //     while (currentDate <= endDate) {
+        //         let items = [];
+        //         for (let i of data.calendarItems) {
+        //             if (i.startTime.split('T')[0] == currentDate)
+        //                 items.push(i)
+        //         }
+        //         for (let i of data.scheduleItems)
+        //             output += `<p>s - ${i.scheduleItemID} - ${i.title} - ${i.startTime}</p>`;
+        //         for (let i of data.tasks)
+        //             output += `<p>t - ${i.taskID} - ${i.title} - ${i.startTime}</p>`;
+        //     }
+        // }
+
+        let getWeekData = async (startTime, endTime) => {
+            let data = await getThisWeeksSchedule(startTime, endTime);
+            if (!data)
+                return;
+            let output = "";
+            for (let i of data.calendarItems)
+                output += `<p>c - ${i.calendarItemID} - ${i.title} - ${i.startTime}</p>`;
+            for (let i of data.scheduleItems)
+                output += `<p>s - ${i.scheduleItemID} - ${i.title} - ${i.startTime}</p>`;
+            for (let i of data.tasks)
+                output += `<p>t - ${i.taskID} - ${i.title} - ${i.startTime}</p>`;
+            document.querySelector("#weekData").innerHTML = output;
         }
     </script>
 </body>
