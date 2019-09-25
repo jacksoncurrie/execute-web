@@ -8,31 +8,91 @@ import Tasks from "./Tasks.jsx";
 
 class App extends React.Component {
   state = {
-    currentPage: <Calendar />
+    currentPage: <Calendar />,
+    isSignIn: true,
+    signInError: "",
+    isAddItem: false,
+    isItemList: false,
+    canGoBack: false,
+    addItemType: "add",
+    addItemModule: "calendar",
+    addItemTitle: "",
+    addItemInput2: "",
+    addItemInput3: ""
   };
 
-  addClicked = () => {
-    // Open sign in popup component
-    console.log("Add button clicked");
+  openAddItem = (type, canGoBackButton) => {
+    this.setState({
+      isAddItem: true,
+      isItemList: false,
+      isSignIn: false,
+      canGoBack: canGoBackButton,
+      addItemType: type
+    });
   };
 
-  signOutClicked = () => {
-    console.log("Sign out button clicked");
+  openItemList = () => {
+    this.setState({
+      isAddItem: false,
+      isItemList: true,
+      isSignIn: false
+    });
+  };
+
+  openSignIn = () => {
+    this.setState({
+      isAddItem: false,
+      isItemList: false,
+      isSignIn: true
+    });
+  };
+
+  closePopups = () => {
+    this.setState({
+      isAddItem: false,
+      isItemList: false,
+      isSignIn: false
+    });
+  };
+
+  signInUser = e => {
+    console.log(
+      "Logged in: " + e.target.username.value + " " + e.target.password.value
+    );
+    this.closePopups();
+    e.preventDefault();
+  };
+
+  signOutUser = () => {
+    console.log("User signed out.");
+  };
+
+  addItemSubmit = () => {
+    console.log("Added item");
   };
 
   moduleItemClicked = e => {
     switch (e.currentTarget.id) {
       case "calendar-module":
         // Set to calendar component
-        this.setState({ currentPage: <Calendar /> });
+        this.setState({
+          currentPage: <Calendar />,
+          addItemModule: "calendar"
+        });
         break;
       case "schedule-module":
         // Set to scheudle component
-        this.setState({ currentPage: <Schedule /> });
+        this.setState({
+          currentPage: <Schedule />,
+          addItemModule: "schedule"
+        });
         break;
       case "tasks-module":
         // Set to tasks component
-        this.setState({ currentPage: <Tasks /> });
+        this.setState({
+          currentPage: <Tasks />,
+          addItemModule: "tasks"
+        });
         break;
       default:
         break;
@@ -44,18 +104,18 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <div className="left-header-group">
-            <div onClick={this.addClicked}>
+            <button onClick={() => this.openAddItem("add", false)}>
               <img src="#" className="App-logo" alt="add icon" />
-            </div>
+            </button>
           </div>
           <div className="center-header-group">
             <img src="#" className="App-logo" alt="logo" />
             <h3>EXECUTE</h3>
           </div>
           <div className="right-header-group">
-            <div onClick={this.signOutClicked}>
+            <button onClick={this.signOutUser}>
               <img src="#" className="App-logo" alt="sign out icon" />
-            </div>
+            </button>
           </div>
         </header>
 
@@ -63,41 +123,58 @@ class App extends React.Component {
 
         <footer>
           <div className="left-footer-group footer-group">
-            <div
+            <button
               id="calendar-module"
               className="module-group"
               onClick={this.moduleItemClicked}
             >
               <img src="#" className="App-logo" alt="calendar icon" />
               <h4 className="footer-group-caption">Calendar</h4>
-            </div>
+            </button>
           </div>
           <div className="center-footer-group footer-group">
-            <div
+            <button
               id="schedule-module"
               className="module-group"
               onClick={this.moduleItemClicked}
             >
               <img src="#" className="App-logo" alt="scheudle icon" />
               <h4 className="footer-group-caption">Schedule</h4>
-            </div>
+            </button>
           </div>
           <div className="right-footer-group footer-group">
-            <div
+            <button
               id="tasks-module"
               className="module-group"
               onClick={this.moduleItemClicked}
             >
               <img src="#" className="App-logo" alt="tasks icon" />
               <h4 className="footer-group-caption">Tasks</h4>
-            </div>
+            </button>
           </div>
         </footer>
 
         {/* Popup Components */}
-        <SignIn />
-        <ItemList />
-        <AddItem />
+        {this.state.isSignIn ? (
+          <SignIn
+            signInUser={this.submitSignIn}
+            errorMessage={this.state.error}
+          />
+        ) : null}
+        {this.state.isItemList ? <ItemList /> : null}
+        {this.state.isAddItem ? (
+          <AddItem
+            type={this.state.addItemType}
+            module={this.state.addItemModule}
+            canGoBack={this.state.canGoBack}
+            title={this.state.addItemTitle}
+            input2={this.state.addItemInput2}
+            input3={this.state.addItemInput3}
+            goBack={this.openItemList}
+            close={this.closePopups}
+            submitForm={this.addItemSubmit}
+          />
+        ) : null}
       </div>
     );
   }
