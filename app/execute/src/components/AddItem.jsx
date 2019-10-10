@@ -31,14 +31,30 @@ class AddItem extends React.Component {
                 <input name="title" type="text"></input>
               </div>
               <div>
-                <label htmlFor="input2">Password:</label>
+                <label htmlFor="input2">{this.props.input2}:</label>
               </div>
               <div>
                 <input name="input2" type="text"></input>
               </div>
+              <div>
+                <label htmlFor="input3">{this.props.input3}:</label>
+              </div>
+              <div>
+                <input name="input3" type="text"></input>
+              </div>
+              {this.props.input4 !== "" ? (
+                <div>
+                  <div>
+                    <label htmlFor="input4">{this.props.input4}:</label>
+                  </div>
+                  <div>
+                    <input name="input4" type="text"></input>
+                  </div>
+                </div>
+              ) : null}
               <p>{this.props.errorMessage}</p>
               <div>
-                <input type="submit" value="Item" />
+                <input type="submit" value={this.props.add} />
               </div>
               <div>
                 {this.props.type !== "add" ? (

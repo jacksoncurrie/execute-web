@@ -12,13 +12,28 @@ class App extends React.Component {
     isSignIn: true,
     signInError: "",
     isAddItem: false,
-    isItemList: false,
+    isItemList: true,
     canGoBack: false,
     addItemType: "add",
     addItemModule: "calendar",
-    addItemTitle: "",
-    addItemInput2: "",
-    addItemInput3: ""
+    addItemTitle: "Calendar",
+    addItemInput2: "Start Date",
+    addItemInput3: "End Date",
+    addItemInput4: "",
+    addItem: "Add Item",
+    listTitle: "21st September 2019",
+    items: [
+      {
+        id: "1234",
+        title: "Pick up Sarah from the airport",
+        time: "12:00 - 13:00"
+      },
+      {
+        id: "5678",
+        title: "Do laundry",
+        time: "13:00 - 14:00"
+      }
+    ]
   };
 
   openAddItem = (type, canGoBackButton) => {
@@ -63,13 +78,25 @@ class App extends React.Component {
     e.preventDefault();
   };
 
-  signOutUser = () => {
+  signOutUser = e => {
     console.log("User signed out.");
+    e.preventDefault();
   };
 
-  addItemSubmit = () => {
+  addItemSubmit = e => {
     console.log("Added item");
+    e.preventDefault();
   };
+
+  deleteItem = e => {
+    console.log("Item deleted");
+    e.preventDefault();
+  }
+
+  openItemToUpdate = e => {
+    console.log("Item clicked to open: " + e.currentTarget.id);
+    this.openAddItem("update", true);
+  }
 
   moduleItemClicked = e => {
     switch (e.currentTarget.id) {
@@ -157,11 +184,19 @@ class App extends React.Component {
         {/* Popup Components */}
         {this.state.isSignIn ? (
           <SignIn
-            signInUser={this.submitSignIn}
+            submitSignIn={this.signInUser}
             errorMessage={this.state.error}
           />
         ) : null}
-        {this.state.isItemList ? <ItemList /> : null}
+        {this.state.isItemList ? (
+          <ItemList 
+            addItem={() => this.openAddItem("add", true)}
+            title={this.state.listTitle}
+            close={this.closePopups}
+            items={this.state.items}
+            openItem={this.openItemToUpdate}
+          />
+        ) : null}
         {this.state.isAddItem ? (
           <AddItem
             type={this.state.addItemType}
@@ -170,14 +205,17 @@ class App extends React.Component {
             title={this.state.addItemTitle}
             input2={this.state.addItemInput2}
             input3={this.state.addItemInput3}
+            input4={this.state.addItemInput4}
             goBack={this.openItemList}
             close={this.closePopups}
             submitForm={this.addItemSubmit}
+            add={this.state.addItem}
+            deleteItem={this.deleteItem}
           />
         ) : null}
       </div>
     );
-  }
+  };
 }
 
 export default App;

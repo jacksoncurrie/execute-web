@@ -13,13 +13,13 @@ class SignIn extends React.Component {
               <label htmlFor="username">Username:</label>
             </div>
             <div>
-              <input name="username" type="text"></input>
+              <input name="username" type="text" />
             </div>
             <div>
               <label htmlFor="password">Password:</label>
             </div>
             <div>
-              <input name="password" type="password"></input>
+              <input name="password" type="password" />
             </div>
             <p>{this.props.errorMessage}</p>
             <div>
