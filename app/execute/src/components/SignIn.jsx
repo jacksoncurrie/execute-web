@@ -3,29 +3,37 @@ import React from "react";
 class SignIn extends React.Component {
   render() {
     return (
-      <div className="outerPopupWrapper">
-        <div className="innerPopoutContainer">
-          <div className="center-popup-group">
-            <h1>Sign In</h1>
+      <div className="outer-popup-wrapper">
+        <div className="inner-popout-container">
+          <div className="popup-header">
+            <div className="center-popup-group">
+              <h3>Sign In</h3>
+            </div>
           </div>
-          <form name="signIn" onSubmit={this.props.submitSignIn}>
-            <div>
-              <label htmlFor="username">Username:</label>
-            </div>
-            <div>
-              <input name="username" type="text" />
-            </div>
-            <div>
-              <label htmlFor="password">Password:</label>
-            </div>
-            <div>
-              <input name="password" type="password" />
-            </div>
-            <p>{this.props.errorMessage}</p>
-            <div>
-              <input type="submit" value="Sign In" />
-            </div>
-          </form>
+          <div className="popup-form">
+            <form name="signIn" onSubmit={this.props.submitSignIn}>
+              <div>
+                <label htmlFor="username">
+                  <strong>Username:</strong>
+                </label>
+              </div>
+              <div>
+                <input name="username" type="text" />
+              </div>
+              <div>
+                <label htmlFor="password">
+                  <strong>Password:</strong>
+                </label>
+              </div>
+              <div>
+                <input name="password" type="password" />
+              </div>
+              <p>{this.props.errorMessage}</p>
+              <div>
+                <input type="submit" value="Sign In" />
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     );

@@ -1,0 +1,120 @@
+.outer-popup-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "popup";
+  justify-items: center;
+  align-items: center;
+}
+
+.inner-popout-container {
+  grid-area: popup;
+  box-shadow: 0 0 30px black;
+  background-color: var(--color-bg);
+  display: grid;
+  grid-template-rows: 70px auto;
+  grid-template-areas: "header" "content";
+  justify-items: center;
+  align-items: center;
+}
+
+.popup-header {
+  grid-area: header;
+  display: grid;
+  grid-template-columns: 50px auto 50px;
+  grid-template-areas: "left-popup-group center-popup-group right-popup-group";
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+}
+
+.left-popup-group {
+  grid-area: left-popup-group;
+}
+
+.left-popup-group img,
+.right-popup-group img {
+  width: 18px;
+}
+
+.center-popup-group {
+  color: var(--color-heading);
+  text-align: center;
+  grid-area: center-popup-group;
+  font-size: 18px;
+}
+
+.right-popup-group {
+  grid-area: right-popup-group;
+}
+
+.popup-form {
+  grid-area: content;
+  margin: 0 50px;
+}
+
+.popup-form input:not([type="submit"]) {
+  width: 220px;
+  padding: 3px 5px;
+  margin: 5px 0;
+  border: 3px solid transparent;
+}
+
+.popup-form input:not([type="submit"]):focus {
+  border: 3px solid var(--color-highlight);
+}
+
+.popup-form label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.popup-form input[type="submit"],
+.popup-form button {
+  border: none;
+  background-color: var(--color-link);
+  color: var(--color-fg);
+  padding: 5px 10px;
+  font-weight: var(--fontweight-bold);
+  margin-bottom: 20px;
+}
+
+.popup-form button {
+  margin-left: 15px;
+}
+
+.item-list {
+  margin-bottom: 20px;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.list-item {
+  background-color: var(--color-link);
+  padding: 5px 10px;
+  margin-bottom: 15px;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-areas: "title date";
+  align-items: center;
+  width: 400px;
+}
+
+.list-item > strong {
+  justify-self: start;
+}
+
+.list-item > span {
+  justify-self: end;
+}
+
+.list-item:hover {
+  cursor: pointer;
+}

@@ -1,4 +1,7 @@
+// Libraries
 import React from "react";
+
+// Components
 import SignIn from "./SignIn.jsx";
 import AddItem from "./AddItem.jsx";
 import ItemList from "./ItemList.jsx";
@@ -6,23 +9,57 @@ import Calendar from "./Calendar.jsx";
 import Schedule from "./Schedule.jsx";
 import Tasks from "./Tasks.jsx";
 
+// Styles
+import "../styles/App.css";
+import "../styles/Popups.css";
+
+// Images
+import Logo from "../images/logo-small-nobackground.svg";
+import AddIcon from "../images/add-icon.svg";
+import SignOutIcon from "../images/signout-icon.svg";
+import CalendarIcon from "../images/calendar-icon.svg";
+import ScheduleIcon from "../images/schedule-icon.svg";
+import TasksIcon from "../images/tasks-icon.svg";
+import CalendarIconCurrent from "../images/calendar-icon-current.svg";
+import ScheduleIconCurrent from "../images/schedule-icon-current.svg";
+import TasksIconCurrent from "../images/tasks-icon-current.svg";
+
 class App extends React.Component {
   state = {
-    currentPage: <Calendar />,
-    isSignIn: true,
+    currentPage: "calendar",
+    isSignIn: false,
     signInError: "",
     isAddItem: false,
     isItemList: true,
     canGoBack: false,
     addItemType: "add",
-    addItemModule: "calendar",
     addItemTitle: "Calendar",
     addItemInput2: "Start Date",
     addItemInput3: "End Date",
     addItemInput4: "",
-    addItem: "Add Item",
+    addItem: "Update Item",
     listTitle: "21st September 2019",
     items: [
+      {
+        id: "1234",
+        title: "Pick up Sarah from the airport",
+        time: "12:00 - 13:00"
+      },
+      {
+        id: "5678",
+        title: "Do laundry",
+        time: "13:00 - 14:00"
+      },
+      {
+        id: "1234",
+        title: "Pick up Sarah from the airport",
+        time: "12:00 - 13:00"
+      },
+      {
+        id: "5678",
+        title: "Do laundry",
+        time: "13:00 - 14:00"
+      },
       {
         id: "1234",
         title: "Pick up Sarah from the airport",
@@ -36,13 +73,14 @@ class App extends React.Component {
     ]
   };
 
-  openAddItem = (type, canGoBackButton) => {
+  openAddItem = (type, desc, canGoBackButton) => {
     this.setState({
       isAddItem: true,
       isItemList: false,
       isSignIn: false,
       canGoBack: canGoBackButton,
-      addItemType: type
+      addItemType: type,
+      addItem: desc
     });
   };
 
@@ -71,15 +109,14 @@ class App extends React.Component {
   };
 
   signInUser = e => {
-    console.log(
-      "Logged in: " + e.target.username.value + " " + e.target.password.value
-    );
+    console.log("Logged in: " + e.target.username.value + " " + e.target.password.value);
     this.closePopups();
     e.preventDefault();
   };
 
   signOutUser = e => {
     console.log("User signed out.");
+    this.openSignIn();
     e.preventDefault();
   };
 
@@ -91,34 +128,34 @@ class App extends React.Component {
   deleteItem = e => {
     console.log("Item deleted");
     e.preventDefault();
-  }
+  };
 
   openItemToUpdate = e => {
     console.log("Item clicked to open: " + e.currentTarget.id);
-    this.openAddItem("update", true);
-  }
+    this.openAddItem("update", "Update Item", true);
+  };
 
   moduleItemClicked = e => {
     switch (e.currentTarget.id) {
       case "calendar-module":
         // Set to calendar component
         this.setState({
-          currentPage: <Calendar />,
-          addItemModule: "calendar"
+          currentPage: "calendar",
+          addItemTitle: "Calendar"
         });
         break;
       case "schedule-module":
         // Set to scheudle component
         this.setState({
-          currentPage: <Schedule />,
-          addItemModule: "schedule"
+          currentPage: "schedule",
+          addItemTitle: "Schedule"
         });
         break;
       case "tasks-module":
         // Set to tasks component
         this.setState({
-          currentPage: <Tasks />,
-          addItemModule: "tasks"
+          currentPage: "tasks",
+          addItemTitle: "Tasks"
         });
         break;
       default:
@@ -131,91 +168,86 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <div className="left-header-group">
-            <button onClick={() => this.openAddItem("add", false)}>
-              <img src="#" className="App-logo" alt="add icon" />
+            <button onClick={() => this.openAddItem("add", "Add Item", false)}>
+              <img src={AddIcon} className="header-icon" alt="add icon" />
             </button>
           </div>
           <div className="center-header-group">
-            <img src="#" className="App-logo" alt="logo" />
-            <h3>EXECUTE</h3>
+            <img src={Logo} className="app-logo-img" alt="logo" />
+            <h3 className="app-logo-heading">EXECUTE</h3>
           </div>
           <div className="right-header-group">
             <button onClick={this.signOutUser}>
-              <img src="#" className="App-logo" alt="sign out icon" />
+              <img src={SignOutIcon} className="header-icon" alt="sign out icon" />
             </button>
           </div>
         </header>
 
-        <main>{this.state.currentPage}</main>
+        <main>
+          {/* Main Components */}
+          {this.state.currentPage === "calendar" ? (
+            <Calendar
+              goBack={this.goBack}
+              goForward={this.goForward}
+              title="Test Title"
+              /* ? Most of this can be achieved in own component */
+            />
+          ) : null}
+          {this.state.currentPage === "schedule" ? <Schedule /> : null}
+          {this.state.currentPage === "tasks" ? <Tasks /> : null}
+
+          {/* Popup Components */}
+          {this.state.isSignIn ? <SignIn submitSignIn={this.signInUser} errorMessage={this.state.error} /> : null}
+          {this.state.isItemList ? (
+            <ItemList
+              addItem={() => this.openAddItem("add", "Add Item", true)}
+              title={this.state.listTitle}
+              close={this.closePopups}
+              items={this.state.items}
+              openItem={this.openItemToUpdate}
+            />
+          ) : null}
+          {this.state.isAddItem ? (
+            <AddItem
+              type={this.state.addItemType}
+              module={this.state.currentPage}
+              canGoBack={this.state.canGoBack}
+              title={this.state.addItemTitle}
+              input2={this.state.addItemInput2}
+              input3={this.state.addItemInput3}
+              input4={this.state.addItemInput4}
+              goBack={this.openItemList}
+              close={this.closePopups}
+              submitForm={this.addItemSubmit}
+              add={this.state.addItem}
+              deleteItem={this.deleteItem}
+            />
+          ) : null}
+        </main>
 
         <footer>
           <div className="left-footer-group footer-group">
-            <button
-              id="calendar-module"
-              className="module-group"
-              onClick={this.moduleItemClicked}
-            >
-              <img src="#" className="App-logo" alt="calendar icon" />
-              <h4 className="footer-group-caption">Calendar</h4>
+            <button id="calendar-module" className="module-group" onClick={this.moduleItemClicked}>
+              <img src={this.state.currentPage === "calendar" ? CalendarIconCurrent : CalendarIcon} className="footer-icon" alt="calendar icon" />
+              <h4 className={this.state.currentPage === "calendar" ? "currentPage footer-group-caption" : "footer-group-caption"}>Calendar</h4>
             </button>
           </div>
           <div className="center-footer-group footer-group">
-            <button
-              id="schedule-module"
-              className="module-group"
-              onClick={this.moduleItemClicked}
-            >
-              <img src="#" className="App-logo" alt="scheudle icon" />
-              <h4 className="footer-group-caption">Schedule</h4>
+            <button id="schedule-module" className="module-group" onClick={this.moduleItemClicked}>
+              <img src={this.state.currentPage === "schedule" ? ScheduleIconCurrent : ScheduleIcon} className="footer-icon" alt="scheudle icon" />
+              <h4 className={this.state.currentPage === "schedule" ? "currentPage footer-group-caption" : "footer-group-caption"}>Schedule</h4>
             </button>
           </div>
           <div className="right-footer-group footer-group">
-            <button
-              id="tasks-module"
-              className="module-group"
-              onClick={this.moduleItemClicked}
-            >
-              <img src="#" className="App-logo" alt="tasks icon" />
-              <h4 className="footer-group-caption">Tasks</h4>
+            <button id="tasks-module" className="module-group" onClick={this.moduleItemClicked}>
+              <img src={this.state.currentPage === "tasks" ? TasksIconCurrent : TasksIcon} className="footer-icon" alt="tasks icon" />
+              <h4 className={this.state.currentPage === "tasks" ? "currentPage footer-group-caption" : "footer-group-caption"}>Tasks</h4>
             </button>
           </div>
         </footer>
-
-        {/* Popup Components */}
-        {this.state.isSignIn ? (
-          <SignIn
-            submitSignIn={this.signInUser}
-            errorMessage={this.state.error}
-          />
-        ) : null}
-        {this.state.isItemList ? (
-          <ItemList 
-            addItem={() => this.openAddItem("add", true)}
-            title={this.state.listTitle}
-            close={this.closePopups}
-            items={this.state.items}
-            openItem={this.openItemToUpdate}
-          />
-        ) : null}
-        {this.state.isAddItem ? (
-          <AddItem
-            type={this.state.addItemType}
-            module={this.state.addItemModule}
-            canGoBack={this.state.canGoBack}
-            title={this.state.addItemTitle}
-            input2={this.state.addItemInput2}
-            input3={this.state.addItemInput3}
-            input4={this.state.addItemInput4}
-            goBack={this.openItemList}
-            close={this.closePopups}
-            submitForm={this.addItemSubmit}
-            add={this.state.addItem}
-            deleteItem={this.deleteItem}
-          />
-        ) : null}
       </div>
     );
-  };
+  }
 }
 
 export default App;

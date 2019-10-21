@@ -1,42 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="530"
-   height="100"
-   viewBox="0 0 140.22916 26.458334"
+   width="630"
+   height="200"
+   viewBox="0 0 166.6875 52.916666"
    version="1.1"
-   id="svg8"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="logo-large-nobackground.svg">
+   id="svg8">
   <defs
      id="defs2" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="261.25587"
-     inkscape:cy="63.668673"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1001"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     units="px" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -50,21 +25,25 @@
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-270.54165)">
+     transform="translate(0,-244.08334)"
+     id="layer1">
+    <rect
+       style="fill:#26303d;fill-opacity:1;stroke:none;stroke-width:0.20729065"
+       id="rect858"
+       width="166.6875"
+       height="52.916668"
+       x="0"
+       y="244.08333" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.63075066px;line-height:1.25;font-family:'Arial Rounded MT Bold';-inkscape-font-specification:'Arial Rounded MT Bold, ';letter-spacing:0px;word-spacing:0px;fill:#fff5ea;fill-opacity:1;stroke:none;stroke-width:0.2657688"
-       x="41.648129"
-       y="285.64062"
+       x="55.122063"
+       y="272.65179"
        id="text1090"
        transform="scale(0.981834,1.0185021)"><tspan
-         sodipodi:role="line"
          id="tspan1088"
-         x="41.648129"
-         y="285.64062"
+         x="55.122063"
+         y="272.65179"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:19.84407043px;font-family:Raleway;-inkscape-font-specification:'Raleway Bold';letter-spacing:2.12615037px;fill:#fff5ea;fill-opacity:1;stroke-width:0.2657688"
          dx="0">EXECUTE</tspan></text>
     <rect
@@ -72,29 +51,29 @@
        id="rect1092"
        width="19.84375"
        height="5.2916665"
-       x="10.583332"
-       y="291.70834" />
+       x="23.8125"
+       y="278.47919" />
     <rect
        style="fill:#fff5ea;fill-opacity:1;stroke:none;stroke-width:0.2811355"
        id="rect1092-0-6-4"
        width="26.458334"
        height="5.2916665"
-       x="270.54166"
-       y="-5.2916665"
+       x="257.3125"
+       y="-18.520834"
        transform="rotate(90)" />
     <rect
        style="fill:#23ad7b;fill-opacity:1;stroke:none;stroke-width:0.24347049"
        id="rect1092-5"
        width="19.84375"
        height="5.2916665"
-       x="10.583332"
-       y="270.54166" />
+       x="23.8125"
+       y="257.3125" />
     <rect
        style="fill:#ff714f;fill-opacity:1;stroke:none;stroke-width:0.24347049"
        id="rect1092-0"
        width="19.84375"
        height="5.2916665"
-       x="10.583332"
-       y="281.125" />
+       x="23.8125"
+       y="267.89584" />
   </g>
 </svg>
