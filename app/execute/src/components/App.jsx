@@ -26,14 +26,14 @@ import TasksIconCurrent from "../images/tasks-icon-current.svg";
 
 class App extends React.Component {
   state = {
-    currentPage: "calendar",
-    isSignIn: false,
+    currentPage: "tasks",
+    isSignIn: true,
     signInError: "",
     isAddItem: false,
-    isItemList: true,
+    isItemList: false,
     canGoBack: false,
     addItemType: "add",
-    addItemTitle: "Calendar",
+    addItemTitle: "Tasks",
     addItemInput2: "Start Date",
     addItemInput3: "End Date",
     addItemInput4: "",
@@ -194,7 +194,9 @@ class App extends React.Component {
             />
           ) : null}
           {this.state.currentPage === "schedule" ? <Schedule /> : null}
-          {this.state.currentPage === "tasks" ? <Tasks /> : null}
+          {this.state.currentPage === "tasks" ? (
+            <Tasks addNewTask={() => this.openAddItem("update", "Update Item", false)} openNewItemList={this.openItemList} />
+          ) : null}
 
           {/* Popup Components */}
           {this.state.isSignIn ? <SignIn submitSignIn={this.signInUser} errorMessage={this.state.error} /> : null}
