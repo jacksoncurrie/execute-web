@@ -25,6 +25,7 @@ import ScheduleIconCurrent from "../images/schedule-icon-current.svg";
 import TasksIconCurrent from "../images/tasks-icon-current.svg";
 
 class App extends React.Component {
+  // Application State Variables
   state = {
     currentPage: "tasks",
     isSignIn: true,
@@ -73,6 +74,7 @@ class App extends React.Component {
     ]
   };
 
+  // Application Events
   openAddItem = (type, desc, canGoBackButton) => {
     this.setState({
       isAddItem: true,
@@ -163,9 +165,11 @@ class App extends React.Component {
     }
   };
 
+  // Application Page
   render() {
     return (
       <div className="App">
+        {/* Application Header */}
         <header className="App-header">
           <div className="left-header-group">
             <button onClick={() => this.openAddItem("add", "Add Item", false)}>
@@ -185,14 +189,7 @@ class App extends React.Component {
 
         <main>
           {/* Main Components */}
-          {this.state.currentPage === "calendar" ? (
-            <Calendar
-              goBack={this.goBack}
-              goForward={this.goForward}
-              title="Test Title"
-              /* ? Most of this can be achieved in own component */
-            />
-          ) : null}
+          {this.state.currentPage === "calendar" ? <Calendar goBack={this.goBack} goForward={this.goForward} title="Test Title" /> : null}
           {this.state.currentPage === "schedule" ? <Schedule /> : null}
           {this.state.currentPage === "tasks" ? (
             <Tasks addNewTask={() => this.openAddItem("update", "Update Item", false)} openNewItemList={this.openItemList} />
@@ -227,6 +224,7 @@ class App extends React.Component {
           ) : null}
         </main>
 
+        {/* Application Footer */}
         <footer>
           <div className="left-footer-group footer-group">
             <button id="calendar-module" className="module-group" onClick={this.moduleItemClicked}>
