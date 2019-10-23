@@ -35,7 +35,7 @@ class AddItem extends React.Component {
                 </label>
               </div>
               <div>
-                <input name="title" type="text" />
+                <input tabIndex="1" name="title" type="text" />
               </div>
               <div>
                 <label htmlFor="input2">
@@ -43,7 +43,7 @@ class AddItem extends React.Component {
                 </label>
               </div>
               <div>
-                <input name="input2" type="text" />
+                <input tabIndex="2" name="input2" type="text" />
               </div>
               <div>
                 <label htmlFor="input3">
@@ -51,7 +51,7 @@ class AddItem extends React.Component {
                 </label>
               </div>
               <div>
-                <input name="input3" type="text" />
+                <input tabIndex="3" name="input3" type="text" />
               </div>
               {this.props.input4 !== "" ? (
                 <div>
@@ -61,14 +61,14 @@ class AddItem extends React.Component {
                     </label>
                   </div>
                   <div>
-                    <input name="input4" type="text" />
+                    <input tabIndex="4" name="input4" type="text" />
                   </div>
                 </div>
               ) : null}
               <p>{this.props.errorMessage}</p>
               <div>
-                <input type="submit" value={this.props.add} />
-                {this.props.type !== "add" ? <button onClick={this.props.deleteItem}>Delete Item</button> : null}
+                <input tabIndex="5" type="submit" value={this.props.add} />
+                {this.props.type !== "add" ? <button tabIndex="6" onClick={this.props.deleteItem}>Delete Item</button> : null}
               </div>
             </form>
           </div>

@@ -1,5 +1,6 @@
 // Libraries
 import React from "react";
+import CalendarHelper from "calendar";
 
 class Calendar extends React.Component {
   state = {
@@ -67,6 +68,11 @@ class Calendar extends React.Component {
     );
   };
 
+  getCalendar = () => {
+    let cal = new CalendarHelper.Calendar(1);
+    console.log(cal.monthDays(2019, 0));
+  };
+
   componentDidMount() {
     // When app starts load day grid
     this.setState({
@@ -98,7 +104,8 @@ class Calendar extends React.Component {
               <div className="week">Saturday</div>
               <div className="week">Sunday</div>
             </div>
-            <div className="calendarDays">{this.state.daysGrid}</div>
+            {/* <div className="calendarDays">{this.state.daysGrid}</div> */}
+            {this.getCalendar()}
           </div>
         </div>
       </div>

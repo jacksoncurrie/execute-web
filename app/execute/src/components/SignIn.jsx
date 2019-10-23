@@ -18,7 +18,7 @@ class SignIn extends React.Component {
                 </label>
               </div>
               <div>
-                <input name="username" type="text" />
+                <input tabIndex="1" name="username" type="text" />
               </div>
               <div>
                 <label htmlFor="password">
@@ -26,11 +26,11 @@ class SignIn extends React.Component {
                 </label>
               </div>
               <div>
-                <input name="password" type="password" />
+                <input tabIndex="2" name="password" type="password" />
               </div>
               <p>{this.props.errorMessage}</p>
               <div>
-                <input type="submit" value="Sign In" />
+                <input tabIndex="3" type="submit" value="Sign In" />
               </div>
             </form>
           </div>

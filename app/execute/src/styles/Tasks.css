@@ -19,7 +19,7 @@
 
 .tasks-titles > div {
   padding: 10px 0;
-  width: 20vw;
+  width: 22vw;
   text-align: center;
   border-top: 3px solid var(--color-fg);
   border-left: 3px solid var(--color-fg);
@@ -41,7 +41,7 @@
 }
 
 .tasks-content > div {
-  width: 20vw;
+  width: 22vw;
   text-align: center;
   border-bottom: 3px solid var(--color-fg);
   border-left: 3px solid var(--color-fg);
