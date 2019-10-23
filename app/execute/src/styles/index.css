@@ -57,5 +57,5 @@ input[type="submit"] {
 
 button:active,
 input[type="submit"]:active {
-  filter: brightness(0.5);
+  opacity: 0.5;
 }
