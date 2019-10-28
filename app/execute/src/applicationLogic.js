@@ -1,16 +1,16 @@
+// API Constants
 const url = "http://localhost:3000/graphql";
-
 const opts = {
   method: "POST",
   headers: { "Content-Type": "application/json" }
 };
 
+// Cookie functions
 const saveCookie = (username, password) => (document.cookie = "user=" + JSON.stringify({ username: username, password: password }));
-
 const getCookie = () => (document.cookie ? JSON.parse(document.cookie.split("=")[1]) : null);
-
 const removeCookie = () => (document.cookie = "user=nothing;expires=Thu, 01 Jan 1970 00:00:01 GMT"); // Set user expired
 
+// Getting data functions
 export const login = async (username, password) => {
   opts.body = JSON.stringify({
     query: `
@@ -25,9 +25,9 @@ export const login = async (username, password) => {
     `
   });
 
-  let res = await fetch(url, opts);
-  res = await res.json();
   try {
+    let res = await fetch(url, opts);
+    res = await res.json();
     if (res.data.getUserData) {
       console.log("User " + res.data.getUserData.username + " signed in");
       saveCookie(username, password);
@@ -44,7 +44,7 @@ export const login = async (username, password) => {
   }
 };
 
-const getThisWeeksSchedule = async (startDate, endDate) => {
+export const getThisWeeksSchedule = async (startDate, endDate) => {
   let user = getCookie();
   if (!user) return null;
   opts.body = JSON.stringify({
@@ -91,7 +91,7 @@ const getThisWeeksSchedule = async (startDate, endDate) => {
   }
 };
 
-const getAllCalendarItems = async () => {
+export const getAllCalendarItems = async () => {
   let user = getCookie();
   if (!user) return null;
   opts.body = JSON.stringify({
@@ -119,7 +119,7 @@ const getAllCalendarItems = async () => {
   }
 };
 
-const getAllScheduleItems = async () => {
+export const getAllScheduleItems = async () => {
   let user = getCookie();
   if (!user) return null;
   opts.body = JSON.stringify({
@@ -148,7 +148,7 @@ const getAllScheduleItems = async () => {
   }
 };
 
-const getAllTasks = async () => {
+export const getAllTasks = async () => {
   let user = getCookie();
   if (!user) return null;
   opts.body = JSON.stringify({
@@ -177,7 +177,8 @@ const getAllTasks = async () => {
   }
 };
 
-const addCalendarItem = (title, startDate, startTime, endDate, endTime) => {
+// Adding API functions
+export const addCalendarItem = async (title, startDate, startTime, endDate, endTime) => {
   let user = getCookie();
   opts.body = JSON.stringify({
     query: `
@@ -195,78 +196,18 @@ const addCalendarItem = (title, startDate, startTime, endDate, endTime) => {
     `
   });
 
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.addItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.addItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
 };
 
-const updateCalendarItem = (calendarItemID, title, startDate, startTime, endDate, endTime) => {
-  let user = getCookie();
-  opts.body = JSON.stringify({
-    query: `
-      mutation UpdateCalendarItem {
-        updateItem(
-          username: "${user.username}",
-          password: "${user.password}",
-          calendarItem: {
-            calendarItemID: "${calendarItemID}",
-            title: "${title}",
-            startTime: "${startDate}T${startTime}",
-            endTime: "${endDate}T${endTime}"
-          }
-        )
-      }
-    `
-  });
-
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.updateItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
-};
-
-const removeCalendarItem = calendarItemID => {
-  let user = getCookie();
-  opts.body = JSON.stringify({
-    query: `
-      mutation RemoveCalendarItem {
-        removeItem(
-          username: "${user.username}",
-          password: "${user.password}",
-          calendarItem: {
-            calendarItemID: "${calendarItemID}"
-          }
-        )
-      }
-    `
-  });
-
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.removeItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
-};
-
-const addScheduleItem = (title, category, startTime, endTime) => {
+export const addScheduleItem = async (title, category, startTime, endTime) => {
   let user = getCookie();
   opts.body = JSON.stringify({
     query: `
@@ -285,19 +226,78 @@ const addScheduleItem = (title, category, startTime, endTime) => {
     `
   });
 
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.addItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.addItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
 };
 
-const updateScheduleItem = (scheduleItemID, title, category, startTime, endTime) => {
+export const addTask = async (title, priority, estimatedTime) => {
+  let user = getCookie();
+  opts.body = JSON.stringify({
+    query: `
+      mutation AddCalendarItem {
+        addItem(
+          username: "${user.username}",
+          password: "${user.password}",
+          task: {
+            title: "${title}",
+            priority: ${priority},
+            estimatedTime: ${estimatedTime}
+          }
+        )
+      }
+    `
+  });
+
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.addItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
+};
+
+// Update API functions
+export const updateCalendarItem = async (calendarItemID, title, startDate, startTime, endDate, endTime) => {
+  let user = getCookie();
+  opts.body = JSON.stringify({
+    query: `
+      mutation UpdateCalendarItem {
+        updateItem(
+          username: "${user.username}",
+          password: "${user.password}",
+          calendarItem: {
+            calendarItemID: "${calendarItemID}",
+            title: "${title}",
+            startTime: "${startDate}T${startTime}",
+            endTime: "${endDate}T${endTime}"
+          }
+        )
+      }
+    `
+  });
+
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.updateItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
+};
+
+export const updateScheduleItem = async (scheduleItemID, title, category, startTime, endTime) => {
   let user = getCookie();
   opts.body = JSON.stringify({
     query: `
@@ -317,77 +317,18 @@ const updateScheduleItem = (scheduleItemID, title, category, startTime, endTime)
     `
   });
 
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.updateItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.updateItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
 };
 
-const removeScheduleItem = scheduleItemID => {
-  let user = getCookie();
-  opts.body = JSON.stringify({
-    query: `
-      mutation RemoveScheduleItem {
-        removeItem(
-          username: "${user.username}",
-          password: "${user.password}",
-          scheduleItem: {
-            scheduleItemID: "${scheduleItemID}"
-          }
-        )
-      }
-    `
-  });
-
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.removeItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
-};
-
-const addTask = (title, priority, estimatedTime) => {
-  let user = getCookie();
-  opts.body = JSON.stringify({
-    query: `
-      mutation AddCalendarItem {
-        addItem(
-          username: "${user.username}",
-          password: "${user.password}",
-          task: {
-            title: "${title}",
-            priority: ${priority},
-            estimatedTime: ${estimatedTime}
-          }
-        )
-      }
-    `
-  });
-
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.addItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
-};
-
-const updateTask = (taskID, title, priority, estimatedTime, startDate, startTime) => {
+export const updateTask = async (taskID, title, priority, estimatedTime, startDate, startTime) => {
   let user = getCookie();
   opts.body = JSON.stringify({
     query: `
@@ -407,19 +348,73 @@ const updateTask = (taskID, title, priority, estimatedTime, startDate, startTime
     `
   });
 
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.updateItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.updateItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
 };
 
-const removeTask = taskID => {
+// Remove API functions
+export const removeCalendarItem = async calendarItemID => {
+  let user = getCookie();
+  opts.body = JSON.stringify({
+    query: `
+      mutation RemoveCalendarItem {
+        removeItem(
+          username: "${user.username}",
+          password: "${user.password}",
+          calendarItem: {
+            calendarItemID: "${calendarItemID}"
+          }
+        )
+      }
+    `
+  });
+
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.removeItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
+};
+
+export const removeScheduleItem = async scheduleItemID => {
+  let user = getCookie();
+  opts.body = JSON.stringify({
+    query: `
+      mutation RemoveScheduleItem {
+        removeItem(
+          username: "${user.username}",
+          password: "${user.password}",
+          scheduleItem: {
+            scheduleItemID: "${scheduleItemID}"
+          }
+        )
+      }
+    `
+  });
+
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.removeItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
+};
+
+export const removeTask = async taskID => {
   let user = getCookie();
   opts.body = JSON.stringify({
     query: `
@@ -435,14 +430,13 @@ const removeTask = taskID => {
     `
   });
 
-  fetch(url, opts)
-    .then(res => res.json())
-    .then(res => {
-      if (res.errors) throw res.errors;
-      else console.log(res.data.removeItem);
-    })
-    .catch(err => {
-      console.log("An error occured, please see below:");
-      console.error(err);
-    });
+  try {
+    let res = await fetch(url, opts);
+    res = await res.json();
+    if (res.errors) throw res.errors;
+    else console.log(res.data.removeItem);
+  } catch (err) {
+    console.log("An error occured, please see below:");
+    console.error(err);
+  }
 };
