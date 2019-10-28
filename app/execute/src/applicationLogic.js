@@ -28,6 +28,7 @@ export const login = async (username, password) => {
   try {
     let res = await fetch(url, opts);
     res = await res.json();
+    // Check username comes back as successful result
     if (res.data.getUserData) {
       console.log("User " + res.data.getUserData.username + " signed in");
       saveCookie(username, password);
