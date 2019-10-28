@@ -2,110 +2,116 @@
 import React from "react";
 import CalendarHelper from "calendar";
 
+// Images
+import LeftIcon from "../images/left-icon.svg";
+import RightIcon from "../images/right-icon.svg";
+
+// Styles
+import "../styles/Calendar.css";
+
 class Calendar extends React.Component {
   state = {
-    daysGrid: <div></div>
+    calendar: [],
+    date: "February, 2019",
+    currentMonth: 0
   };
 
-  getDaysGrid = () => {
-    return (
-      <div>
-        <div className="row1">
-          <div className="empty"></div>
-          <div className="day1">1</div>
-          <div className="day2">2</div>
-          <div className="day3">3</div>
-          <div className="day4">4</div>
-          <div className="day5">5</div>
-          <div className="day6">6</div>
-        </div>
-        <div className="row2">
-          <div className="day7">7</div>
-          <div className="day8">8</div>
-          <div className="day9">9</div>
-          <div className="day10">10</div>
-          <div className="day11">11</div>
-          <div className="day12">12</div>
-          <div className="day13">13</div>
-        </div>
-        <div className="row3">
-          <div className="day14">14</div>
-          <div className="day15">15</div>
-          <div className="day16">16</div>
-          <div className="day17">17</div>
-          <div className="day18">18</div>
-          <div className="day19">19</div>
-          <div className="day20">20</div>
-        </div>
-        <div className="row4">
-          <div className="day21">21</div>
-          <div className="day22">22</div>
-          <div className="day23">23</div>
-          <div className="day24">24</div>
-          <div className="day25">25</div>
-          <div className="day26">26</div>
-          <div className="day27">27</div>
-        </div>
-        <div className="row5">
-          <div className="day28">28</div>
-          <div className="day29">29</div>
-          <div className="day30">30</div>
-          <div className="day31">31</div>
-          <div className="empty"></div>
-          <div className="empty"></div>
-          <div className="empty"></div>
-        </div>
-        <div className="row6">
-          <div className="empty"></div>
-          <div className="empty"></div>
-          <div className="empty"></div>
-          <div className="empty"></div>
-          <div className="empty"></div>
-          <div className="empty"></div>
-          <div className="empty"></div>
-        </div>
-      </div>
-    );
+  today;
+  currentMonth = 0;
+  currentYear = 2019;
+  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  goForward = () => {
+    if (this.currentMonth === 11) {
+      this.currentMonth = 0;
+      this.setState({ currentMonth: 0 });
+      this.currentYear++;
+    } else {
+      this.currentMonth++;
+      this.setState({
+        currentMonth: this.state.currentMonth + 1
+      });
+    }
+    this.getCalendar();
+  };
+
+  goBack = () => {
+    if (this.currentMonth === 0) {
+      this.currentMonth = 11;
+      this.setState({ currentMonth: 11 });
+      this.currentYear--;
+    } else {
+      this.currentMonth--;
+      this.setState({
+        currentMonth: this.state.currentMonth - 1
+      });
+    }
+    this.getCalendar();
   };
 
   getCalendar = () => {
     let cal = new CalendarHelper.Calendar(1);
-    console.log(cal.monthDays(2019, 0));
+    this.setState({
+      calendar: cal.monthDays(this.currentYear, this.currentMonth),
+      date: `${this.months[this.currentMonth]}, ${this.currentYear}`
+    });
   };
 
   componentDidMount() {
-    // When app starts load day grid
+    // When app starts load grid for today
+    this.today = new Date();
+    this.currentMonth = this.today.getMonth();
+    this.currentYear = this.today.getFullYear();
     this.setState({
-      daysGrid: this.getDaysGrid()
-    });
+      currentMonth: this.today.getMonth()
+    })
+    this.getCalendar();
   }
 
   render() {
     return (
-      <div>
-        <h1>Calendar</h1>
-        <div className="calendar">
-          <div className="calendarHeading">
-            <button onClick={this.props.goBack}>
-              <img src="#" className="back-icon" alt="back icon" />
+      <div className="calendar-container">
+        <div className="calendar-grid">
+          <div className="calendar-heading">
+            <button onClick={this.goBack}>
+              <img src={LeftIcon} className="back-icon" alt="back icon" />
             </button>
-            <h2>{this.props.date}</h2>
-            <button onClick={this.props.goForward}>
-              <img src="#" className="forward-icon" alt="forward icon" />
+            <h2>{this.state.date}</h2>
+            <button onClick={this.goForward}>
+              <img src={RightIcon} className="forward-icon" alt="forward icon" />
             </button>
           </div>
-          <div className="calendarGrid">
-            <div className="calendarWeeks">
-              <div className="week">Monday</div>
-              <div className="week">Tuesday</div>
-              <div className="week">Wednesday</div>
-              <div className="week">Thursday</div>
-              <div className="week">Friday</div>
-              <div className="week">Saturday</div>
-              <div className="week">Sunday</div>
+          <div className="calendar-body">
+            <div className="calendar-headings">
+              <div>Monday</div>
+              <div>Tuesday</div>
+              <div>Wednesday</div>
+              <div>Thursday</div>
+              <div>Friday</div>
+              <div>Saturday</div>
+              <div>Sunday</div>
             </div>
-            {/* <div className="calendarDays">{this.state.daysGrid}</div> */}
-            {this.getCalendar()}
+            {this.state.calendar.map((value, index) => (
+              <div key={index} className="calendar-row">
+                {value.map((day, idx) =>
+                  day === 0 ? (
+                    <div key={idx}></div>
+                  ) : (
+                    <div
+                      key={idx}
+                      onClick={this.props.openDay}
+                      className={
+                        this.state.currentMonth === this.today.getMonth() && day === this.today.getDate()
+                          ? "calendar-day current-day"
+                          : "calendar-day"
+                      }
+                    >
+                      {day}
+                    </div>
+                  )
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 // Libraries
 import React from "react";
+import "datejs";
 
 // Styles
 import "../styles/Schedule.css";
@@ -8,27 +9,82 @@ import "../styles/Schedule.css";
 import LeftIcon from "../images/left-icon.svg";
 import RightIcon from "../images/right-icon.svg";
 
-
 class Schedule extends React.Component {
   state = {
-    //currentPage : <h1>Calendar</h1> // The component
+    weekNumber: 0,
+    year: 0,
+    month: "",
+    weekdays: []
   };
+
+  // Check if day is today to make bold
+  getWorkDayItem = today =>
+    Date.today().toDateString() === today.toDateString() ? <strong>{today.toString("dddd dS")}</strong> : today.toString("dddd dS");
+
+    // Set the weeks days
+  setWorkdays = today => [
+    this.getWorkDayItem(today),
+    this.getWorkDayItem(today.add(1).day()),
+    this.getWorkDayItem(today.add(1).day()),
+    this.getWorkDayItem(today.add(1).day()),
+    this.getWorkDayItem(today.add(1).day()),
+    this.getWorkDayItem(today.add(1).day()),
+    this.getWorkDayItem(today.add(1).day())
+  ];
+
+  goForward = () => {
+    let today = Date.today().setWeek(this.state.weekNumber);
+    today.add(1).week();
+    this.setState({
+      weekNumber: today.getWeek(),
+      year: today.getFullYear(),
+      month: today.toString("MMMM"),
+      weekdays: this.setWorkdays(today)
+    });
+  };
+
+  goBack = () => {
+    let today = Date.today().setWeek(this.state.weekNumber);
+    today.add(-1).week();
+    this.setState({
+      weekNumber: today.getWeek(),
+      year: today.getFullYear(),
+      month: today.toString("MMMM"),
+      weekdays: this.setWorkdays(today)
+    });
+  };
+
+  componentDidMount() {
+    let today = Date.today().setWeek(Date.today().getWeek());
+    this.setState({
+      weekNumber: today.getWeek(),
+      year: today.getFullYear(),
+      month: today.toString("MMMM"),
+      weekdays: this.setWorkdays(today)
+    });
+  }
 
   render() {
     return (
       <div className="schedule-container">
         <div className="schedule-grid">
+
+          {/* Grid heading */}
           <div className="schedule-header">
-            <button className="left-icon">
+            <button onClick={this.goBack} className="left-icon">
               <img src={LeftIcon} alt="go left" />
             </button>
             <div className="schedule-title">
-              <h2>Week 6, Februrary 2019</h2>
+              <h2>
+                Week {this.state.weekNumber}, {this.state.month} {this.state.year}
+              </h2>
             </div>
-            <button className="right-icon">
+            <button onClick={this.goForward} className="right-icon">
               <img src={RightIcon} alt="go right" />
             </button>
           </div>
+          
+          {/* Grid contents */}
           <div className="schedule-body">
             <div className="schedule-hours">
               <p className="empty-grid"></p>
@@ -60,31 +116,45 @@ class Schedule extends React.Component {
             </div>
             <div className="schedule-content">
               <div className="schedule-group schedule-monday">
-                <div className="schedule-days">Monday 12th</div>
+                <div onClick={this.props.openDay} className="schedule-days">
+                  {this.state.weekdays[0]}
+                </div>
                 <div>M</div>
               </div>
               <div className="schedule-group schedule-tuesday">
-                <div className="schedule-days">Tuesday 13th</div>
+                <div onClick={this.props.openDay} className="schedule-days">
+                  {this.state.weekdays[1]}
+                </div>
                 <div>T</div>
               </div>
               <div className="schedule-group schedule-wednesday">
-                <div className="schedule-days">Wednesday 14th</div>
+                <div onClick={this.props.openDay} className="schedule-days">
+                  {this.state.weekdays[2]}
+                </div>
                 <div>W</div>
               </div>
               <div className="schedule-group schedule-thursday">
-                <div className="schedule-days">Thursday 15th</div>
+                <div onClick={this.props.openDay} className="schedule-days">
+                  {this.state.weekdays[3]}
+                </div>
                 <div>T</div>
               </div>
               <div className="schedule-group schedule-friday">
-                <div className="schedule-days">Friday 16th</div>
+                <div onClick={this.props.openDay} className="schedule-days">
+                  {this.state.weekdays[4]}
+                </div>
                 <div>F</div>
               </div>
               <div className="schedule-group schedule-saturday">
-                <div className="schedule-days">Saturday 17th</div>
+                <div onClick={this.props.openDay} className="schedule-days">
+                  {this.state.weekdays[5]}
+                </div>
                 <div>S</div>
               </div>
               <div className="schedule-group schedule-sunday">
-                <div className="schedule-days">Sunday 18th</div>
+                <div onClick={this.props.openDay} className="schedule-days">
+                  {this.state.weekdays[6]}
+                </div>
                 <div>S</div>
               </div>
             </div>

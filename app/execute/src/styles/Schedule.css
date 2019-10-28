@@ -36,19 +36,22 @@
 }
 
 .schedule-body {
-  overflow-y: scroll;
+  overflow: scroll;
   display: grid;
   grid-template-columns: 70px auto;
 }
 
 .schedule-content {
-  overflow-x: scroll;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(7, minmax(130px, 15vw));
 }
 
 .schedule-hours {
+  position: sticky;
+  left: 0;
+  background-color: var(--color-bg);
+  z-index: 1;
   display: grid;
   grid-template-rows: 50px repeat(24, 50px);
   grid-template-columns: 1fr;
@@ -69,15 +72,25 @@
 }
 
 .schedule-days {
+  position: sticky;
+  top: 0;
+  background-color: var(--color-bg);
   font-size: 12px;
   padding-top: 15px;
   border-bottom: 3px solid var(--color-fg);
+}
+
+.schedule-days:hover {
+  cursor: pointer;
 }
 
 .empty-grid {
   font-size: 12px;
   margin: 0;
   border-bottom: 3px solid var(--color-fg);
+  position: sticky;
+  top: 0;
+  background-color: var(--color-bg);
 }
 
 .schedule-group > div {

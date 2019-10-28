@@ -1,5 +1,6 @@
 // Libraries
 import React from "react";
+import * as AppLogic from "../applicationLogic.js";
 
 // Components
 import SignIn from "./SignIn.jsx";
@@ -27,14 +28,14 @@ import TasksIconCurrent from "../images/tasks-icon-current.svg";
 class App extends React.Component {
   // Application State Variables
   state = {
-    currentPage: "tasks",
+    currentPage: "schedule",
     isSignIn: true,
     signInError: "",
     isAddItem: false,
     isItemList: false,
     canGoBack: false,
     addItemType: "add",
-    addItemTitle: "Tasks",
+    addItemTitle: "Schedule",
     addItemInput2: "Start Date",
     addItemInput3: "End Date",
     addItemInput4: "",
@@ -110,10 +111,18 @@ class App extends React.Component {
     });
   };
 
-  signInUser = e => {
-    console.log("Logged in: " + e.target.username.value + " " + e.target.password.value);
-    this.closePopups();
+  signInUser = async e => {
     e.preventDefault();
+    if (await AppLogic.login(e.target.username.value, e.target.password.value)) {
+      this.closePopups();
+      this.setState({
+        error: ""
+      });
+    } else {
+      this.setState({
+        error: "Incorrect Details"
+      });
+    }
   };
 
   signOutUser = e => {
@@ -189,8 +198,8 @@ class App extends React.Component {
 
         <main>
           {/* Main Components */}
-          {this.state.currentPage === "calendar" ? <Calendar goBack={this.goBack} goForward={this.goForward} title="Test Title" /> : null}
-          {this.state.currentPage === "schedule" ? <Schedule /> : null}
+          {this.state.currentPage === "calendar" ? <Calendar openDay={this.openItemList} /> : null}
+          {this.state.currentPage === "schedule" ? <Schedule openDay={this.openItemList} /> : null}
           {this.state.currentPage === "tasks" ? (
             <Tasks addNewTask={() => this.openAddItem("update", "Update Item", false)} openNewItemList={this.openItemList} />
           ) : null}

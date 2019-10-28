@@ -28,7 +28,7 @@ class SignIn extends React.Component {
               <div>
                 <input tabIndex="2" name="password" type="password" />
               </div>
-              <p>{this.props.errorMessage}</p>
+              <p className="error-message">{this.props.errorMessage}</p>
               <div>
                 <input tabIndex="3" type="submit" value="Sign In" />
               </div>
