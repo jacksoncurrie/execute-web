@@ -45,54 +45,44 @@ class App extends React.Component {
       {
         id: "1234",
         title: "Pick up Sarah from the airport",
-        time: "12:00 - 13:00"
-      },
-      {
-        id: "5678",
-        title: "Do laundry",
-        time: "13:00 - 14:00"
-      },
-      {
-        id: "1234",
-        title: "Pick up Sarah from the airport",
-        time: "12:00 - 13:00"
-      },
-      {
-        id: "5678",
-        title: "Do laundry",
-        time: "13:00 - 14:00"
-      },
-      {
-        id: "1234",
-        title: "Pick up Sarah from the airport",
-        time: "12:00 - 13:00"
-      },
-      {
-        id: "5678",
-        title: "Do laundry",
-        time: "13:00 - 14:00"
+        time: "12:00 - 13:00",
+        input2: "test2",
+        input3: "test3",
+        input4: "test4",
       }
-    ]
+    ],
+    currentItem: {}
   };
 
   // Application Events
-  openAddItem = (type, desc, canGoBackButton) => {
+  openAddItem = (type, desc, canGoBackButton, data) => {
     this.setState({
       isAddItem: true,
       isItemList: false,
       isSignIn: false,
       canGoBack: canGoBackButton,
       addItemType: type,
-      addItem: desc
+      addItem: desc,
+      currentItem: data || {}
     });
   };
 
-  openItemList = () => {
-    this.setState({
-      isAddItem: false,
-      isItemList: true,
-      isSignIn: false
-    });
+  openItemList = (data, title) => {
+    if (data) {
+      this.setState({
+        isAddItem: false,
+        isItemList: true,
+        isSignIn: false,
+        items: data,
+        listTitle: title
+      });
+    } else {
+      this.setState({
+        isAddItem: false,
+        isItemList: true,
+        isSignIn: false
+      });
+    }
   };
 
   openSignIn = () => {
@@ -141,11 +131,6 @@ class App extends React.Component {
     e.preventDefault();
   };
 
-  openItemToUpdate = e => {
-    console.log("Item clicked to open: " + e.currentTarget.id);
-    this.openAddItem("update", "Update Item", true);
-  };
-
   moduleItemClicked = e => {
     switch (e.currentTarget.id) {
       case "calendar-module":
@@ -174,6 +159,10 @@ class App extends React.Component {
     }
   };
 
+  getTasks = async () => {
+    return await AppLogic.getAllTasks();
+  };
+
   // Application Page
   render() {
     return (
@@ -198,10 +187,10 @@ class App extends React.Component {
 
         <main>
           {/* Main Components */}
-          {this.state.currentPage === "calendar" ? <Calendar openDay={this.openItemList} /> : null}
-          {this.state.currentPage === "schedule" ? <Schedule openDay={this.openItemList} /> : null}
+          {this.state.currentPage === "calendar" ? <Calendar openDay={(data, title) => this.openItemList(data, title)} /> : null}
+          {this.state.currentPage === "schedule" ? <Schedule openDay={(data, title) => this.openItemList(data, title)} /> : null}
           {this.state.currentPage === "tasks" ? (
-            <Tasks addNewTask={() => this.openAddItem("update", "Update Item", false)} openNewItemList={this.openItemList} />
+            <Tasks addNewTask={data => this.openAddItem("update", "Update Item", false, data)} openNewItemList={(data, title) => this.openItemList(data, title)} tasks={this.getTasks} />
           ) : null}
 
           {/* Popup Components */}
@@ -212,7 +201,7 @@ class App extends React.Component {
               title={this.state.listTitle}
               close={this.closePopups}
               items={this.state.items}
-              openItem={this.openItemToUpdate}
+              openItem={data => this.openAddItem("update", "Update Item", true, data)}
             />
           ) : null}
           {this.state.isAddItem ? (
@@ -221,14 +210,12 @@ class App extends React.Component {
               module={this.state.currentPage}
               canGoBack={this.state.canGoBack}
               title={this.state.addItemTitle}
-              input2={this.state.addItemInput2}
-              input3={this.state.addItemInput3}
-              input4={this.state.addItemInput4}
-              goBack={this.openItemList}
+              goBack={() => this.openItemList(null, null) /* Don't send through any data */}
               close={this.closePopups}
               submitForm={this.addItemSubmit}
               add={this.state.addItem}
               deleteItem={this.deleteItem}
+              data={this.state.currentItem}
             />
           ) : null}
         </main>

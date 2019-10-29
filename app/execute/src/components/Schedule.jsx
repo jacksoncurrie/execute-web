@@ -116,43 +116,43 @@ class Schedule extends React.Component {
             </div>
             <div className="schedule-content">
               <div className="schedule-group schedule-monday">
-                <div onClick={this.props.openDay} className="schedule-days">
+                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
                   {this.state.weekdays[0]}
                 </div>
                 <div>M</div>
               </div>
               <div className="schedule-group schedule-tuesday">
-                <div onClick={this.props.openDay} className="schedule-days">
+                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
                   {this.state.weekdays[1]}
                 </div>
                 <div>T</div>
               </div>
               <div className="schedule-group schedule-wednesday">
-                <div onClick={this.props.openDay} className="schedule-days">
+                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
                   {this.state.weekdays[2]}
                 </div>
                 <div>W</div>
               </div>
               <div className="schedule-group schedule-thursday">
-                <div onClick={this.props.openDay} className="schedule-days">
+                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
                   {this.state.weekdays[3]}
                 </div>
                 <div>T</div>
               </div>
               <div className="schedule-group schedule-friday">
-                <div onClick={this.props.openDay} className="schedule-days">
+                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
                   {this.state.weekdays[4]}
                 </div>
                 <div>F</div>
               </div>
               <div className="schedule-group schedule-saturday">
-                <div onClick={this.props.openDay} className="schedule-days">
+                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
                   {this.state.weekdays[5]}
                 </div>
                 <div>S</div>
               </div>
               <div className="schedule-group schedule-sunday">
-                <div onClick={this.props.openDay} className="schedule-days">
+                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
                   {this.state.weekdays[6]}
                 </div>
                 <div>S</div>

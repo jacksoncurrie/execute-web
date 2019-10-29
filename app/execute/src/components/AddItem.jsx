@@ -6,6 +6,43 @@ import BackIcon from "../images/back-icon.svg";
 import CloseIcon from "../images/close-icon.svg";
 
 class AddItem extends React.Component {
+  state = {
+    input2: "",
+    input3: "",
+    input4: ""
+  };
+
+  componentDidMount() {
+    switch (this.props.module) {
+      case "calendar":
+        // Set to calendar component
+        this.setState({
+          input2: "Start Time",
+          input3: "End Time",
+          input4: null
+        });
+        break;
+      case "schedule":
+        // Set to scheudle component
+        this.setState({
+          input2: "Category",
+          input3: "Start Time",
+          input4: "End Time"
+        });
+        break;
+      case "tasks":
+        // Set to tasks component
+        this.setState({
+          input2: "Priority",
+          input3: "Estimated Time",
+          input4: "Start Time"
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     return (
       <div className="outer-popup-wrapper">
@@ -35,33 +72,33 @@ class AddItem extends React.Component {
                 </label>
               </div>
               <div>
-                <input tabIndex="1" name="title" type="text" />
+                <input tabIndex="1" name="title" type="text" defaultValue={this.props.data.title || ""} />
               </div>
               <div>
                 <label htmlFor="input2">
-                  <strong>{this.props.input2}:</strong>
+                  <strong>{this.state.input2}:</strong>
                 </label>
               </div>
               <div>
-                <input tabIndex="2" name="input2" type="text" />
+                <input tabIndex="2" name="input2" type="text" defaultValue={this.props.data.input2 || ""} />
               </div>
               <div>
                 <label htmlFor="input3">
-                  <strong>{this.props.input3}:</strong>
+                  <strong>{this.state.input3}:</strong>
                 </label>
               </div>
               <div>
-                <input tabIndex="3" name="input3" type="text" />
+                <input tabIndex="3" name="input3" type="text" defaultValue={this.props.data.input3 || ""} />
               </div>
-              {this.props.input4 !== "" ? (
+              {this.state.input4 ? (
                 <div>
                   <div>
                     <label htmlFor="input4">
-                      <strong>{this.props.input4}:</strong>
+                      <strong>{this.state.input4}:</strong>
                     </label>
                   </div>
                   <div>
-                    <input tabIndex="4" name="input4" type="text" />
+                    <input tabIndex="4" name="input4" type="text" defaultValue={this.props.data.input4 || ""} />
                   </div>
                 </div>
               ) : null}

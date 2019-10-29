@@ -6,59 +6,85 @@ import "../styles/Tasks.css";
 
 class Tasks extends React.Component {
   state = {
-    //currentPage : <h1>Calendar</h1> // The component
+    tasks: []
   };
+
+  // Data filter functions
+  getItemFromId = id => {
+    let res = this.state.tasks.filter(data => data.taskID === id);
+    return res.map(i => ({
+      id: i.taskID,
+      title: i.title,
+      input2: i.priority,
+      input3: i.estimatedTime,
+      input4: i.startTime
+    }))[0]; // Get only one item
+  };
+
+  getItemForPriority = priority => {
+    let res = this.state.tasks.filter(data => data.priority === priority);
+    return res.map(i => ({
+      id: i.taskID,
+      title: i.title,
+      time: i.estimatedTime + "m",
+      input2: i.priority,
+      input3: i.estimatedTime,
+      input4: i.startTime
+    }));
+  } 
+
+  async componentDidMount() {
+    this.setState({
+      tasks: await this.props.tasks()
+    });
+  }
 
   render() {
     return (
       <div className="tasks-list">
         <div className="tasks-grid">
           <div className="tasks-titles">
-            <div className="high-title" onClick={this.props.openNewItemList}>
+            <div className="high-title" onClick={() => this.props.openNewItemList(this.getItemForPriority(3), "High Priority")}>
               <h3>High</h3>
             </div>
-            <div className="medium-title" onClick={this.props.openNewItemList}>
+            <div className="medium-title" onClick={() => this.props.openNewItemList(this.getItemForPriority(2), "Medium Priority")}>
               <h3>Medium</h3>
             </div>
-            <div className="low-title" onClick={this.props.openNewItemList}>
+            <div className="low-title" onClick={() => this.props.openNewItemList(this.getItemForPriority(1), "Low Priority")}>
               <h3>Low</h3>
             </div>
-            <div className="none-title" onClick={this.props.openNewItemList}>
+            <div className="none-title" onClick={() => this.props.openNewItemList(this.getItemForPriority(0), "No Priority")}>
               <h3>None</h3>
             </div>
           </div>
           <div className="tasks-content">
             <div className="high-content">
-              <button onClick={this.props.addNewTask}>
-                <strong>Fix car 1</strong>
-              </button>
+              {this.getItemForPriority(3).map((data, idx) => (
+                <button key={idx} onClick={() => this.props.addNewTask(this.getItemFromId(data.id))}>
+                  <strong>{data.title}</strong>
+                </button>
+              ))}
             </div>
             <div className="medium-content">
-              <button onClick={this.props.addNewTask}>
-                <strong>Fix car 2</strong>
-              </button>
+              {this.getItemForPriority(2).map((data, idx) => (
+                <button key={idx} onClick={() => this.props.addNewTask(this.getItemFromId(data.id))}>
+                  <strong>{data.title}</strong>
+                </button>
+              ))}
             </div>
             <div className="low-content">
-              <button onClick={this.props.addNewTask}>
-                <strong>Fix car 3</strong>
-              </button>
-              <button onClick={this.props.addNewTask}>
-                <strong>Fix car 3</strong>
-              </button>
-              <button onClick={this.props.addNewTask}>
-                <strong>Fix car 3</strong>
-              </button>
-              <button onClick={this.props.addNewTask}>
-                <strong>Fix car 3</strong>
-              </button>
+              {this.getItemForPriority(1).map((data, idx) => (
+                <button key={idx} onClick={() => this.props.addNewTask(this.getItemFromId(data.id))}>
+                  <strong>{data.title}</strong>
+                </button>
+              ))}
             </div>
             <div className="none-content">
-              <button onClick={this.props.addNewTask}>
-                <strong>Fix car 4</strong>
-              </button>
-              <button onClick={this.props.addNewTask}>
-                <strong>Fix car 4</strong>
-              </button>
+              {this.getItemForPriority(0).map((data, idx) => (
+                <button key={idx} onClick={() => this.props.addNewTask(this.getItemFromId(data.id))}>
+                  <strong>{data.title}</strong>
+                </button>
+              ))}
             </div>
           </div>
         </div>

@@ -31,7 +31,7 @@ class ItemList extends React.Component {
           </div>
           <div className="popup-form item-list">
             {this.props.items.map((item, idx) => (
-              <div className="list-item" key={idx} id={item.id} onClick={this.props.openItem}>
+              <div className="list-item" key={idx} id={item.id} onClick={() => this.props.openItem(item)}>
                 <strong>{item.title}</strong>
                 <span>{item.time}</span>
               </div>

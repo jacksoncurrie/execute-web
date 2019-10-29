@@ -93,7 +93,7 @@
 
 .item-list {
   margin-bottom: 20px;
-  max-height: 200px;
+  height: 200px;
   overflow-y: scroll;
 }
 

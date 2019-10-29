@@ -99,7 +99,7 @@ class Calendar extends React.Component {
                   ) : (
                     <div
                       key={idx}
-                      onClick={this.props.openDay}
+                      onClick={() => this.props.openDay(null, null)}
                       className={
                         this.state.currentMonth === this.today.getMonth() && day === this.today.getDate()
                           ? "calendar-day current-day"
