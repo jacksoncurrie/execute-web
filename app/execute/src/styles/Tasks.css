@@ -38,12 +38,15 @@
 .tasks-content {
   display: grid;
   grid-template-columns: auto auto auto auto;
+  overflow-y: overlay;
+  overflow-x: hidden;
+  border-bottom: 3px solid var(--color-fg);
+  height: calc(80vh - 130px);
 }
 
 .tasks-content > div {
   width: 22vw;
   text-align: center;
-  border-bottom: 3px solid var(--color-fg);
   border-left: 3px solid var(--color-fg);
 }
 

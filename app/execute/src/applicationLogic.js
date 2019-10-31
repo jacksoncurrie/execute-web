@@ -7,7 +7,7 @@ const opts = {
 
 // Cookie functions
 const saveCookie = (username, password) => (document.cookie = "user=" + JSON.stringify({ username: username, password: password }));
-const getCookie = () => (document.cookie ? JSON.parse(document.cookie.split("=")[1]) : null);
+export const getCookie = () => (document.cookie ? JSON.parse(document.cookie.split("=")[1]) : null);
 const removeCookie = () => (document.cookie = "user=nothing;expires=Thu, 01 Jan 1970 00:00:01 GMT"); // Set user expired
 
 // Getting data functions
@@ -219,8 +219,8 @@ export const addScheduleItem = async (title, category, startTime, endTime) => {
           scheduleItem: {
             title: "${title}",
             category: ${category},
-            startTime: ${startTime},
-            endTime: ${endTime}
+            startTime: "${startTime}",
+            endTime: "${endTime}"
           }
         )
       }

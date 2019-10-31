@@ -13,18 +13,71 @@ class Calendar extends React.Component {
   state = {
     calendar: [],
     date: "February, 2019",
-    currentMonth: 0
+    currentMonth: 0,
+    currentYear: 2019,
+    calendarItems: []
   };
 
   today;
   currentMonth = 0;
   currentYear = 2019;
   months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  hasItems = false;
+
+  // Used to get the data syncronously for render method
+  getDotForDay = day => {
+    let res = this.state.calendarItems;
+    let selectedDay = new Date(`${this.currentYear}-${this.currentMonth + 1}-${day}`);
+    res = res.filter(data => {
+      let startDay = new Date(data.startTime);
+      let endDay = new Date(data.endTime);
+      // Check for the days an item falls on
+      return (
+        (selectedDay < endDay && selectedDay > startDay) ||
+        (startDay.getFullYear() === selectedDay.getFullYear() &&
+          startDay.getMonth() === selectedDay.getMonth() &&
+          startDay.getDate() === selectedDay.getDate()) ||
+        (endDay.getFullYear() === selectedDay.getFullYear() &&
+          endDay.getMonth() === selectedDay.getMonth() &&
+          endDay.getDate() === selectedDay.getDate())
+      );
+    });
+    return res.length > 0;
+  }
+
+  // Gets data directly from database
+  getItemForDay = async day => {
+    let res = await this.props.calendarItems();
+    let selectedDay = new Date(day);
+    res = res.filter(data => {
+      let startDay = new Date(data.startTime);
+      let endDay = new Date(data.endTime);
+      // Check for the days an item falls on
+      return (
+        (selectedDay < endDay && selectedDay > startDay) ||
+        (startDay.getFullYear() === selectedDay.getFullYear() &&
+          startDay.getMonth() === selectedDay.getMonth() &&
+          startDay.getDate() === selectedDay.getDate()) ||
+        (endDay.getFullYear() === selectedDay.getFullYear() &&
+          endDay.getMonth() === selectedDay.getMonth() &&
+          endDay.getDate() === selectedDay.getDate())
+      );
+    });
+    return res.map(i => ({
+      id: i.calendarItemID,
+      title: i.title,
+      input2: i.startTime,
+      input3: i.endTime
+    }));
+  };
 
   goForward = () => {
     if (this.currentMonth === 11) {
       this.currentMonth = 0;
-      this.setState({ currentMonth: 0 });
+      this.setState({
+        currentMonth: 0,
+        currentYear: this.state.currentYear + 1
+      });
       this.currentYear++;
     } else {
       this.currentMonth++;
@@ -38,7 +91,10 @@ class Calendar extends React.Component {
   goBack = () => {
     if (this.currentMonth === 0) {
       this.currentMonth = 11;
-      this.setState({ currentMonth: 11 });
+      this.setState({
+        currentMonth: 11,
+        currentYear: this.setState.currentYear - 1
+      });
       this.currentYear--;
     } else {
       this.currentMonth--;
@@ -57,14 +113,16 @@ class Calendar extends React.Component {
     });
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     // When app starts load grid for today
     this.today = new Date();
     this.currentMonth = this.today.getMonth();
     this.currentYear = this.today.getFullYear();
     this.setState({
-      currentMonth: this.today.getMonth()
-    })
+      currentMonth: this.today.getMonth(),
+      currentYear: this.today.getFullYear(),
+      calendarItems: await this.props.calendarItems()
+    });
     this.getCalendar();
   }
 
@@ -93,23 +151,30 @@ class Calendar extends React.Component {
             </div>
             {this.state.calendar.map((value, index) => (
               <div key={index} className="calendar-row">
-                {value.map((day, idx) =>
-                  day === 0 ? (
+                {value.map((day, idx) => {
+                  return day === 0 ? (
                     <div key={idx}></div>
                   ) : (
                     <div
                       key={idx}
-                      onClick={() => this.props.openDay(null, null)}
+                      onClick={async () => {
+                        let res = await this.getItemForDay(`${this.currentYear}-${this.currentMonth + 1}-${day}`);
+                        if (res.length === 0) this.props.addNewCalendarItem(null);
+                        else return this.props.openDay(res, new Date(`${this.currentYear}-${this.currentMonth + 1}-${day}`).toDateString());
+                      }}
                       className={
-                        this.state.currentMonth === this.today.getMonth() && day === this.today.getDate()
+                        this.state.currentMonth === this.today.getMonth() &&
+                        day === this.today.getDate() &&
+                        this.state.currentYear === this.today.getFullYear()
                           ? "calendar-day current-day"
                           : "calendar-day"
                       }
                     >
                       {day}
+                      {this.getDotForDay(day) ? <div className="dot">&#9679;</div> : null}
                     </div>
-                  )
-                )}
+                  );
+                })}
               </div>
             ))}
           </div>

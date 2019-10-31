@@ -94,7 +94,9 @@
 .item-list {
   margin-bottom: 20px;
   height: 200px;
-  overflow-y: scroll;
+  padding-right: 15px;
+  overflow-y: overlay;
+  overflow-x: hidden;
 }
 
 .list-item {

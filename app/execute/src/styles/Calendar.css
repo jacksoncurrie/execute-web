@@ -33,7 +33,7 @@
 
 .calendar-headings {
   display: grid;
-  grid-template-columns: repeat(7, 13vw);
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .calendar-headings > div {
@@ -53,7 +53,7 @@
 
 .calendar-row {
   display: grid;
-  grid-template-columns: repeat(7, 13vw);
+  grid-template-columns: repeat(7, 1fr);
   border-bottom: 3px solid var(--color-fg);
 }
 
@@ -63,6 +63,8 @@
   border-left: 3px solid var(--color-fg);
   padding: 7px;
   font-size: 14px;
+  width: 12vw;
+  max-width: 150px;
 }
 
 .calendar-row > div > p {

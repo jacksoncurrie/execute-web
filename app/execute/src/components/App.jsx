@@ -29,7 +29,7 @@ class App extends React.Component {
   // Application State Variables
   state = {
     currentPage: "schedule",
-    isSignIn: true,
+    isSignIn: false,
     signInError: "",
     isAddItem: false,
     isItemList: false,
@@ -48,10 +48,11 @@ class App extends React.Component {
         time: "12:00 - 13:00",
         input2: "test2",
         input3: "test3",
-        input4: "test4",
+        input4: "test4"
       }
     ],
-    currentItem: {}
+    currentItem: {},
+    refreshRequired: false
   };
 
   // Application Events
@@ -121,14 +122,114 @@ class App extends React.Component {
     e.preventDefault();
   };
 
-  addItemSubmit = e => {
-    console.log("Added item");
+  addItemSubmit = async e => {
+    // Do not refresh page
     e.preventDefault();
+
+    // Get current page
+    switch (this.state.currentPage) {
+      case "calendar":
+        if (this.state.currentItem.id) {
+          // Update Calender Item
+          await AppLogic.updateCalendarItem(
+            this.state.currentItem.id,
+            e.target.title.value,
+            e.target.input2.value.split("T")[0],
+            e.target.input2.value.split("T")[1],
+            e.target.input3.value.split("T")[0],
+            e.target.input3.value.split("T")[1]
+          );
+        } else {
+          // Add Calendar item         
+          await AppLogic.addCalendarItem(
+            e.target.title.value,
+            e.target.input2.value.split("T")[0],
+            e.target.input2.value.split("T")[1],
+            e.target.input3.value.split("T")[0],
+            e.target.input3.value.split("T")[1]
+          );
+        }
+        break;
+
+      case "schedule":
+        if (this.state.currentItem.id) {
+          // Update schedule item
+          await AppLogic.updateScheduleItem(
+            this.state.currentItem.id,
+            e.target.title.value,
+            e.target.input2.value,
+            e.target.input3.value,
+            e.target.input4.value
+          );
+        } else {
+          // Add schedule item
+          await AppLogic.addScheduleItem(e.target.title.value, e.target.input2.value, e.target.input3.value, e.target.input4.value);
+        }
+        break;
+
+      case "tasks":
+        if (this.state.currentItem.id) {
+          // Update task
+          await AppLogic.updateTask(
+            this.state.currentItem.id,
+            e.target.title.value,
+            e.target.input2.value,
+            e.target.input3.value,
+            e.target.input4.value.split("T")[0],
+            e.target.input4.value.split("T")[1]
+          );
+          this.setState(this.state);
+        } else {
+          // Add task
+          await AppLogic.addTask(e.target.title.value, e.target.input2.value, e.target.input3.value);
+        }
+        break;
+
+      default:
+        // Error occured don't close popup
+        console.error("Unexpected error occured");
+        return;
+    }
+
+    // Refresh component
+    this.setState({ refreshRequired: !this.state.refreshRequired });
+
+    // Close dialog once completed
+    this.closePopups();
   };
 
-  deleteItem = e => {
-    console.log("Item deleted");
+  deleteItem = async e => {
+    // Do not refresh page
     e.preventDefault();
+
+    // Get current page
+    switch (this.state.currentPage) {
+      case "calendar":
+        // Remove calendar item
+        await AppLogic.removeCalendarItem(this.state.currentItem.id);
+        break;
+
+      case "schedule":
+        // Remove scheudle item
+        await AppLogic.removeScheduleItem(this.state.currentItem.id);
+        break;
+
+      case "tasks":
+        //Remove task
+        await AppLogic.removeTask(this.state.currentItem.id);
+        break;
+
+      default:
+        // Error occured don't close popup
+        console.error("Unexpected error occured");
+        return;
+    }
+
+    // Refresh component
+    this.setState({ refreshRequired: !this.state.refreshRequired });
+
+    // Close dialog once completed
+    this.closePopups();
   };
 
   moduleItemClicked = e => {
@@ -163,6 +264,16 @@ class App extends React.Component {
     return await AppLogic.getAllTasks();
   };
 
+  getCalendarItems = async () => {
+    return await AppLogic.getAllCalendarItems();
+  };
+
+  componentDidMount() {
+    let user = AppLogic.getCookie();
+    if (!user)
+      this.openSignIn();
+  }
+
   // Application Page
   render() {
     return (
@@ -187,10 +298,23 @@ class App extends React.Component {
 
         <main>
           {/* Main Components */}
-          {this.state.currentPage === "calendar" ? <Calendar openDay={(data, title) => this.openItemList(data, title)} /> : null}
+          {this.state.currentPage === "calendar" ? (
+            <Calendar
+              key={this.state.refreshRequired}
+              openDay={(data, title) => this.openItemList(data, title)}
+              addNewCalendarItem={data => this.openAddItem("add", "Add Item", false, data)}
+              calendarItems={this.getCalendarItems}
+            />
+          ) : null}
           {this.state.currentPage === "schedule" ? <Schedule openDay={(data, title) => this.openItemList(data, title)} /> : null}
           {this.state.currentPage === "tasks" ? (
-            <Tasks addNewTask={data => this.openAddItem("update", "Update Item", false, data)} openNewItemList={(data, title) => this.openItemList(data, title)} tasks={this.getTasks} />
+            <Tasks
+              key={this.state.refreshRequired}
+              addNewTask={data => this.openAddItem("add", "Add Item", false, data)}
+              updateTask={data => this.openAddItem("update", "Update Item", false, data)}
+              openNewItemList={(data, title) => this.openItemList(data, title)}
+              tasks={this.getTasks}
+            />
           ) : null}
 
           {/* Popup Components */}

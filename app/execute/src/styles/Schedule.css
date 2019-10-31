@@ -36,7 +36,7 @@
 }
 
 .schedule-body {
-  overflow: scroll;
+  overflow: auto;
   display: grid;
   grid-template-columns: 70px auto;
 }
