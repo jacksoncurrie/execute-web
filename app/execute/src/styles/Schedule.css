@@ -99,5 +99,36 @@
 
 .schedule-group:first-child > div {
   border-left: none;
+}
 
+.schedule-items-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.schedule-items {
+  width: 60%;
+  justify-self: center;
+}
+
+.schedule-item {
+  background-color: var(--color-highlight);
+}
+
+.calendar-items {
+  width: 60%;
+  justify-self: center;
+}
+
+.calendar-item {
+  background-color: var(--color-heading);
+}
+
+.tasks-items {
+  width: 60%;
+  justify-self: center;
+}
+
+.tasks-item {
+  background-color: var(--color-link);
 }

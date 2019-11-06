@@ -264,6 +264,10 @@ class App extends React.Component {
     return await AppLogic.getAllTasks();
   };
 
+  getSchedule = async (startDate, endDate) => {
+    return await AppLogic.getThisWeeksSchedule(startDate, endDate);
+  }
+
   getCalendarItems = async () => {
     return await AppLogic.getAllCalendarItems();
   };
@@ -306,7 +310,13 @@ class App extends React.Component {
               calendarItems={this.getCalendarItems}
             />
           ) : null}
-          {this.state.currentPage === "schedule" ? <Schedule openDay={(data, title) => this.openItemList(data, title)} /> : null}
+          {this.state.currentPage === "schedule" ? (
+            <Schedule
+              key={this.state.refreshRequired}
+              schedule={(startDate, endDate) => this.getSchedule(startDate, endDate)}
+              openDay={(data, title) => this.openItemList(data, title)}
+            />
+          ) : null}
           {this.state.currentPage === "tasks" ? (
             <Tasks
               key={this.state.refreshRequired}

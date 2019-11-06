@@ -54,8 +54,8 @@ export const getThisWeeksSchedule = async (startDate, endDate) => {
         getUserData(
           username: "${user.username}",
           password: "${user.password}"
-          startDate: "${startDate}",
-          endDate: "${endDate}
+          startTime: "${startDate}",
+          endTime: "${endDate}"
         ) {
           calendarItems {
             calendarItemID

@@ -14,53 +14,85 @@ class Schedule extends React.Component {
     weekNumber: 0,
     year: 0,
     month: "",
-    weekdays: []
+    startDate: new Date.today(),
+    endDate: new Date.today(),
+    loopDate: new Date.today(),
+    wholeSchedule: {
+      calendarItems: [],
+      scheduleItems: [],
+      tasks: []
+    }
   };
 
-  // Check if day is today to make bold
-  getWorkDayItem = today =>
-    Date.today().toDateString() === today.toDateString() ? <strong>{today.toString("dddd dS")}</strong> : today.toString("dddd dS");
+  // Format date string
+  formatDate = date => date.toString("yyyy-MM-ddTHH:mm");
 
-    // Set the weeks days
-  setWorkdays = today => [
-    this.getWorkDayItem(today),
-    this.getWorkDayItem(today.add(1).day()),
-    this.getWorkDayItem(today.add(1).day()),
-    this.getWorkDayItem(today.add(1).day()),
-    this.getWorkDayItem(today.add(1).day()),
-    this.getWorkDayItem(today.add(1).day()),
-    this.getWorkDayItem(today.add(1).day())
-  ];
-
-  goForward = () => {
-    let today = Date.today().setWeek(this.state.weekNumber);
+  goForward = async () => {
+    let today = new Date.today().setWeek(this.state.weekNumber);
     today.add(1).week();
+    let startDate = new Date.today().setWeek(this.state.weekNumber);
+    startDate.add(1).week();
+    let endDate = new Date.today().setWeek(this.state.weekNumber);
+    endDate
+      .add(1)
+      .week()
+      .add(6)
+      .day();
+    let loopDate = new Date.today().setWeek(this.state.weekNumber);
+    loopDate.add(1).week().add(-1).day();
+
     this.setState({
-      weekNumber: today.getWeek(),
+      weekNumber: this.state.weekNumber + 1,
       year: today.getFullYear(),
       month: today.toString("MMMM"),
-      weekdays: this.setWorkdays(today)
+      startDate: startDate,
+      endDate: endDate,
+      loopDate: loopDate,
+      wholeSchedule: await this.props.schedule(this.formatDate(startDate), this.formatDate(endDate))
     });
   };
 
-  goBack = () => {
-    let today = Date.today().setWeek(this.state.weekNumber);
+  goBack = async () => {
+    let today = new Date.today().setWeek(this.state.weekNumber);
     today.add(-1).week();
+    let startDate = new Date.today().setWeek(this.state.weekNumber);
+    startDate.add(-1).week();
+    let endDate = new Date.today().setWeek(this.state.weekNumber);
+    endDate
+      .add(-1)
+      .week()
+      .add(6)
+      .day();
+    let loopDate = new Date.today().setWeek(this.state.weekNumber);
+    loopDate.add(-1).week().add(-1).day();
+
     this.setState({
-      weekNumber: today.getWeek(),
+      weekNumber: this.state.weekNumber - 1,
       year: today.getFullYear(),
       month: today.toString("MMMM"),
-      weekdays: this.setWorkdays(today)
+      startDate: startDate,
+      endDate: endDate,
+      loopDate: loopDate,
+      wholeSchedule: await this.props.schedule(this.formatDate(startDate), this.formatDate(endDate))
     });
   };
 
-  componentDidMount() {
-    let today = Date.today().setWeek(Date.today().getWeek());
+  async componentDidMount() {
+    let today = new Date.today().setWeek(new Date.today().getWeek());
+    let startDate = new Date.today().setWeek(new Date.today().getWeek());
+    let endDate = new Date.today().setWeek(new Date.today().getWeek());
+    endDate.add(6).day();
+    let loopDate = new Date.today().setWeek(new Date.today().getWeek());
+    loopDate.add(-1).day();
+
     this.setState({
       weekNumber: today.getWeek(),
       year: today.getFullYear(),
       month: today.toString("MMMM"),
-      weekdays: this.setWorkdays(today)
+      startDate: startDate,
+      endDate: endDate,
+      loopDate: loopDate,
+      wholeSchedule: await this.props.schedule(this.formatDate(startDate), this.formatDate(endDate))
     });
   }
 
@@ -68,7 +100,6 @@ class Schedule extends React.Component {
     return (
       <div className="schedule-container">
         <div className="schedule-grid">
-
           {/* Grid heading */}
           <div className="schedule-header">
             <button onClick={this.goBack} className="left-icon">
@@ -83,7 +114,7 @@ class Schedule extends React.Component {
               <img src={RightIcon} alt="go right" />
             </button>
           </div>
-          
+
           {/* Grid contents */}
           <div className="schedule-body">
             <div className="schedule-hours">
@@ -115,48 +146,59 @@ class Schedule extends React.Component {
               <p>00:00</p>
             </div>
             <div className="schedule-content">
-              <div className="schedule-group schedule-monday">
-                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
-                  {this.state.weekdays[0]}
+              {[0, 1, 2, 3, 4, 5, 6].map((day, idx) => (
+                <div key={idx} className="schedule-group">
+                  <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
+                    {new Date.today().toDateString() === this.state.loopDate.add(1).day().toDateString() ? (
+                      <strong>{this.state.loopDate.toString("dddd dS")}</strong>
+                    ) : (
+                      this.state.loopDate.toString("dddd dS")
+                    )}
+                  </div>
+                  <div className="schedule-items-view">
+                    <div className="schedule-items">
+                      {this.state.wholeSchedule.scheduleItems.map((data, idx) => (
+                        data.startTime.split("T")[0] === day.toString() ? (
+                          <div key={idx} className="schedule-item">
+                            S
+                          </div>
+                        ) : null
+                      ))}
+                    </div>
+                    <div className="calendar-items">
+                      {this.state.wholeSchedule.calendarItems.map((data, idx) => {
+                        let startDate = new Date(data.startTime);
+                        let endDate = new Date(data.endTime);
+                        let check = (this.state.loopDate < endDate && this.state.loopDate > startDate) || 
+                          ((startDate.getFullYear() === this.state.loopDate.getFullYear()) && 
+                            (startDate.getMonth() === this.state.loopDate.getMonth()) &&
+                            (startDate.getDate() === this.state.loopDate.getDate())) ||
+                          ((endDate.getFullYear() === this.state.loopDate.getFullYear()) &&
+                            (endDate.getMonth() === this.state.loopDate.getMonth()) &&
+                            (endDate.getDate() === this.state.loopDate.getDate()))
+                        return check ? (
+                          <div key={idx} className="calendar-item">
+                            C
+                          </div>
+                        ) : null;
+                      })}
+                    </div>
+                    <div className="tasks-items">
+                      {this.state.wholeSchedule.tasks.map((data, idx) => {
+                         let startDate = new Date(data.startTime);
+                         let check = ((startDate.getFullYear() === this.state.loopDate.getFullYear()) && 
+                            (startDate.getMonth() === this.state.loopDate.getMonth()) &&
+                            (startDate.getDate() === this.state.loopDate.getDate()))
+                         return check ? (
+                           <div key={idx} className="tasks-item">
+                             T
+                           </div>
+                         ) : null;
+                      })}
+                    </div>
+                  </div>
                 </div>
-                <div>M</div>
-              </div>
-              <div className="schedule-group schedule-tuesday">
-                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
-                  {this.state.weekdays[1]}
-                </div>
-                <div>T</div>
-              </div>
-              <div className="schedule-group schedule-wednesday">
-                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
-                  {this.state.weekdays[2]}
-                </div>
-                <div>W</div>
-              </div>
-              <div className="schedule-group schedule-thursday">
-                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
-                  {this.state.weekdays[3]}
-                </div>
-                <div>T</div>
-              </div>
-              <div className="schedule-group schedule-friday">
-                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
-                  {this.state.weekdays[4]}
-                </div>
-                <div>F</div>
-              </div>
-              <div className="schedule-group schedule-saturday">
-                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
-                  {this.state.weekdays[5]}
-                </div>
-                <div>S</div>
-              </div>
-              <div className="schedule-group schedule-sunday">
-                <div onClick={() => this.props.openDay(null, null)} className="schedule-days">
-                  {this.state.weekdays[6]}
-                </div>
-                <div>S</div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
