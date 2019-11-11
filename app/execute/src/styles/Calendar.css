@@ -37,7 +37,7 @@
 }
 
 .calendar-headings > div {
-  font-size: 12px;
+  font-size: 16px;
   padding-top: 15px;
   border-bottom: 3px solid var(--color-fg);
   height: 50px;
@@ -103,4 +103,40 @@
 
 .calendar-day:hover {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .calendar-heading {
+    font-size: 13px;
+  }
+
+  .calendar-heading > button > img {
+    width: 10px;
+  }
+
+  .calendar-headings > div {
+    font-size: 12px;
+  }
+
+  .calendar-container * {
+    border-width: 2px !important;
+    outline-width: 2px;
+  }
+
+  .current-day {
+    width: 12.85714vw !important;
+  }
+
+  .calendar-grid {
+    max-width: 90vw;
+  }
+
+  .calendar-row > div {
+    font-size: 10px;;
+  }
+
+  .dot {
+    font-size: 12px;
+    top: 5px;
+  }
 }

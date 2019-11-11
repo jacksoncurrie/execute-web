@@ -1,5 +1,5 @@
 // API Constants
-const url = "http://localhost:3000/graphql";
+const url = "http://192.168.1.68:3000/graphql";
 const opts = {
   method: "POST",
   headers: { "Content-Type": "application/json" }
@@ -310,8 +310,8 @@ export const updateScheduleItem = async (scheduleItemID, title, category, startT
             scheduleItemID: "${scheduleItemID}",
             title: "${title}",
             category: ${category},
-            startTime: ${startTime},
-            endTime: ${endTime}
+            startTime: "${startTime}",
+            endTime: "${endTime}"
           }
         )
       }

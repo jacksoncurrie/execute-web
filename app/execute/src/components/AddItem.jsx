@@ -34,7 +34,7 @@ class AddItem extends React.Component {
         // Set to tasks component
         this.setState({
           input2: "Priority",
-          input3: "Estimated Time",
+          input3: "Estimated Time (m)",
           input4: "Start Time"
         });
         break;
@@ -80,7 +80,54 @@ class AddItem extends React.Component {
                 </label>
               </div>
               <div>
-                <input tabIndex="2" name="input2" type="text" defaultValue={this.props.data.input2 || ""} />
+                {this.props.module === "tasks" ? (
+                  <select
+                    className="selectPriority"
+                    name="input2"
+                    defaultValue={this.props.data.input2 !== undefined ? this.props.data.input2 : "-1"}
+                    tabIndex="2"
+                  >
+                    <option value="-1" disabled>
+                      Select Priority
+                    </option>
+                    <option value="0">None</option>
+                    <option value="1">Low</option>
+                    <option value="2">Medium</option>
+                    <option value="3">High</option>
+                  </select>
+                ) : this.props.module === "schedule" ? (
+                  <select
+                    className="selectPriority"
+                    name="input2"
+                    defaultValue={this.props.data.input2 !== undefined ? this.props.data.input2.toString() : "-1"}
+                    tabIndex="2"
+                  >
+                    <option value="-1" disabled>
+                      Select Category
+                    </option>
+                    <option value="0">Work</option>
+                    <option value="1">Exercise</option>
+                    <option value="2">Relax</option>
+                    <option value="3">Art</option>
+                  </select>
+                ) : (
+                  <div>
+                    <input
+                      tabIndex="2"
+                      name="input21"
+                      type="date"
+                      className="split split1"
+                      defaultValue={this.props.data.input2 ? this.props.data.input2.split("T")[0] : ""}
+                    />
+                    <input
+                      tabIndex="2"
+                      name="input22"
+                      type="time"
+                      className="split split2"
+                      defaultValue={this.props.data.input2 ? this.props.data.input2.split("T")[1] : ""}
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 <label htmlFor="input3">
@@ -88,24 +135,109 @@ class AddItem extends React.Component {
                 </label>
               </div>
               <div>
-                <input tabIndex="3" name="input3" type="text" defaultValue={this.props.data.input3 || ""} />
+                {this.props.module === "tasks" ? (
+                  <input tabIndex="3" name="input3" type="number" min="1" defaultValue={this.props.data.input3 || ""} />
+                ) : this.props.module === "schedule" ? (
+                  <div>
+                    <select
+                      className="split split1"
+                      name="input31"
+                      defaultValue={this.props.data.input3 !== undefined ? this.props.data.input3.split("T")[0] : "-1"}
+                      tabIndex="3"
+                    >
+                      <option value="-1" disabled>
+                        Select Day
+                      </option>
+                      <option value="0">Monday</option>
+                      <option value="1">Tuesday</option>
+                      <option value="2">Wednesday</option>
+                      <option value="3">Thursday</option>
+                      <option value="4">Friday</option>
+                      <option value="5">Saturday</option>
+                      <option value="6">Sunday</option>
+                    </select>
+                    <input
+                      tabIndex="3"
+                      name="input32"
+                      type="time"
+                      className="split split2"
+                      defaultValue={this.props.data.input3 ? this.props.data.input3.split("T")[1] : ""}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      tabIndex="3"
+                      name="input31"
+                      type="date"
+                      className="split split1"
+                      defaultValue={this.props.data.input3 ? this.props.data.input3.split("T")[0] : ""}
+                    />
+                    <input
+                      tabIndex="3"
+                      name="input32"
+                      type="time"
+                      className="split split2"
+                      defaultValue={this.props.data.input3 ? this.props.data.input3.split("T")[1] : ""}
+                    />
+                  </div>
+                )}
               </div>
               {this.state.input4 ? (
-                <div>
+                this.props.module === "tasks" && this.props.type === "add" ? null : (
                   <div>
-                    <label htmlFor="input4">
-                      <strong>{this.state.input4}:</strong>
-                    </label>
+                    <div>
+                      <label htmlFor="input4">
+                        <strong>{this.state.input4}:</strong>
+                      </label>
+                    </div>
+                    <div>
+                      {this.props.module === "tasks" ? (
+                        <input
+                          tabIndex="4"
+                          name="input41"
+                          type="date"
+                          className="split split1"
+                          defaultValue={this.props.data.input4 ? this.props.data.input4.split("T")[0] : ""}
+                        />
+                      ) : (
+                        <select
+                          className="split split1"
+                          name="input41"
+                          defaultValue={this.props.data.input4 !== undefined ? this.props.data.input4.split("T")[0] : "-1"}
+                          tabIndex="4"
+                        >
+                          <option value="-1" disabled>
+                            Select Day
+                          </option>
+                          <option value="0">Monday</option>
+                          <option value="1">Tuesday</option>
+                          <option value="2">Wednesday</option>
+                          <option value="3">Thursday</option>
+                          <option value="4">Friday</option>
+                          <option value="5">Saturday</option>
+                          <option value="6">Sunday</option>
+                        </select>
+                      )}
+                      <input
+                        tabIndex="5"
+                        name="input42"
+                        type="time"
+                        className="split split2"
+                        defaultValue={this.props.data.input4 ? this.props.data.input4.split("T")[1] : ""}
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <input tabIndex="4" name="input4" type="text" defaultValue={this.props.data.input4 || ""} />
-                  </div>
-                </div>
+                )
               ) : null}
               <p>{this.props.errorMessage}</p>
               <div>
                 <input tabIndex="5" type="submit" value={this.props.add} />
-                {this.props.type !== "add" ? <button tabIndex="6" onClick={this.props.deleteItem}>Delete Item</button> : null}
+                {this.props.type !== "add" ? (
+                  <button tabIndex="6" onClick={this.props.deleteItem}>
+                    Delete Item
+                  </button>
+                ) : null}
               </div>
             </form>
           </div>

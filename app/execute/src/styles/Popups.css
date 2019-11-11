@@ -23,6 +23,7 @@
   grid-template-areas: "header" "content";
   justify-items: center;
   align-items: center;
+  max-width: 90%;
 }
 
 .popup-header {
@@ -127,4 +128,44 @@
   color: tomato;
   font-weight: var(--fontweight-bold);
   font-size: 13px;
+}
+
+.split {
+  width: 105px !important;
+  vertical-align: middle;
+  font-family: var(--font-content);
+  font-size: 12px;
+  padding: 3px 0 !important;
+}
+
+.split1 {
+  margin-right: 10px !important;
+}
+
+select.split {
+  padding: 5px !important;
+}
+
+.selectPriority {
+  padding: 5px;
+  width: 220px;
+  margin: 3px 0;
+}
+
+select:focus {
+  outline: 2px solid var(--color-highlight);
+}
+
+@media only screen and (max-width: 600px) {
+  .popup-form {
+    margin: 0 7vw;
+  }
+
+  .item-list {
+    width: 70vw;
+  }
+
+  .list-item {
+    width: 100%;
+  }
 }

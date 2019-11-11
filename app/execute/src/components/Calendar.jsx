@@ -141,13 +141,13 @@ class Calendar extends React.Component {
           </div>
           <div className="calendar-body">
             <div className="calendar-headings">
-              <div>Monday</div>
-              <div>Tuesday</div>
-              <div>Wednesday</div>
-              <div>Thursday</div>
-              <div>Friday</div>
-              <div>Saturday</div>
-              <div>Sunday</div>
+              <div>M</div>
+              <div>T</div>
+              <div>W</div>
+              <div>T</div>
+              <div>F</div>
+              <div>S</div>
+              <div>S</div>
             </div>
             {this.state.calendar.map((value, index) => (
               <div key={index} className="calendar-row">

@@ -80,7 +80,7 @@
   border-bottom: 3px solid var(--color-fg);
 }
 
-.schedule-days:hover {
+.schedule-group:hover {
   cursor: pointer;
 }
 
@@ -109,26 +109,54 @@
 .schedule-items {
   width: 60%;
   justify-self: center;
+  position: relative;
 }
 
 .schedule-item {
   background-color: var(--color-highlight);
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+  top: 20px;
+  height: 100px;
 }
 
 .calendar-items {
   width: 60%;
   justify-self: center;
+  position: relative;
 }
 
 .calendar-item {
   background-color: var(--color-heading);
+  position: absolute;
+  height: 350px;
+  width: 100%;
+  top: 20px;
+  z-index: -1;
 }
 
 .tasks-items {
   width: 60%;
   justify-self: center;
+  position: relative;
 }
 
 .tasks-item {
   background-color: var(--color-link);
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+  top: 20px;
+  height: 50px;
+}
+
+@media only screen and (max-width: 600px) {
+  .schedule-header {
+    font-size: 12px;
+  }
+
+  .schedule-header > button > img {
+    width: 12px;
+  }
 }

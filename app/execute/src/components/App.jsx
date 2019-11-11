@@ -48,7 +48,7 @@ class App extends React.Component {
         time: "12:00 - 13:00",
         input2: "test2",
         input3: "test3",
-        input4: "test4"
+        input4: "3T00:00"
       }
     ],
     currentItem: {},
@@ -134,19 +134,19 @@ class App extends React.Component {
           await AppLogic.updateCalendarItem(
             this.state.currentItem.id,
             e.target.title.value,
-            e.target.input2.value.split("T")[0],
-            e.target.input2.value.split("T")[1],
-            e.target.input3.value.split("T")[0],
-            e.target.input3.value.split("T")[1]
+            e.target.input21.value,
+            e.target.input22.value,
+            e.target.input31.value,
+            e.target.input32.value
           );
         } else {
           // Add Calendar item         
           await AppLogic.addCalendarItem(
             e.target.title.value,
-            e.target.input2.value.split("T")[0],
-            e.target.input2.value.split("T")[1],
-            e.target.input3.value.split("T")[0],
-            e.target.input3.value.split("T")[1]
+            e.target.input21.value,
+            e.target.input22.value,
+            e.target.input31.value,
+            e.target.input32.value
           );
         }
         break;
@@ -158,12 +158,17 @@ class App extends React.Component {
             this.state.currentItem.id,
             e.target.title.value,
             e.target.input2.value,
-            e.target.input3.value,
-            e.target.input4.value
+            `${e.target.input31.value}T${e.target.input32.value}`,
+            `${e.target.input41.value}T${e.target.input42.value}`
           );
         } else {
           // Add schedule item
-          await AppLogic.addScheduleItem(e.target.title.value, e.target.input2.value, e.target.input3.value, e.target.input4.value);
+          await AppLogic.addScheduleItem(
+            e.target.title.value,
+            e.target.input2.value,
+            e.target.input31.value + "T" + e.target.input32.value,
+            e.target.input41.value + "T" + e.target.input42.value
+          );
         }
         break;
 
@@ -175,8 +180,8 @@ class App extends React.Component {
             e.target.title.value,
             e.target.input2.value,
             e.target.input3.value,
-            e.target.input4.value.split("T")[0],
-            e.target.input4.value.split("T")[1]
+            e.target.input41.value,
+            e.target.input42.value
           );
           this.setState(this.state);
         } else {
@@ -305,6 +310,7 @@ class App extends React.Component {
           {this.state.currentPage === "calendar" ? (
             <Calendar
               key={this.state.refreshRequired}
+              refreshRequired={this.state.refreshRequired}
               openDay={(data, title) => this.openItemList(data, title)}
               addNewCalendarItem={data => this.openAddItem("add", "Add Item", false, data)}
               calendarItems={this.getCalendarItems}
@@ -313,13 +319,16 @@ class App extends React.Component {
           {this.state.currentPage === "schedule" ? (
             <Schedule
               key={this.state.refreshRequired}
+              refreshRequired={this.state.refreshRequired}
               schedule={(startDate, endDate) => this.getSchedule(startDate, endDate)}
               openDay={(data, title) => this.openItemList(data, title)}
+              addNewItem={data => this.openAddItem("add", "Add Item", false, data)}
             />
           ) : null}
           {this.state.currentPage === "tasks" ? (
             <Tasks
               key={this.state.refreshRequired}
+              refreshRequired={this.state.refreshRequired}
               addNewTask={data => this.openAddItem("add", "Add Item", false, data)}
               updateTask={data => this.openAddItem("update", "Update Item", false, data)}
               openNewItemList={(data, title) => this.openItemList(data, title)}
@@ -334,7 +343,7 @@ class App extends React.Component {
               addItem={() => this.openAddItem("add", "Add Item", true)}
               title={this.state.listTitle}
               close={this.closePopups}
-              items={this.state.items}
+              items={[...this.state.items].sort((a, b) => a.time > b.time)}
               openItem={data => this.openAddItem("update", "Update Item", true, data)}
             />
           ) : null}
