@@ -1,14 +1,14 @@
 // API Constants
-const url = "http://192.168.1.68:3000/graphql";
+const url = "http://192.168.1.68:8080/graphql";
 const opts = {
   method: "POST",
   headers: { "Content-Type": "application/json" }
 };
 
 // Cookie functions
-const saveCookie = (username, password) => (document.cookie = "user=" + JSON.stringify({ username: username, password: password }));
-export const getCookie = () => (document.cookie ? JSON.parse(document.cookie.split("=")[1]) : null);
-const removeCookie = () => (document.cookie = "user=nothing;expires=Thu, 01 Jan 1970 00:00:01 GMT"); // Set user expired
+const saveCookie = (username, password) => (localStorage.setItem("user", JSON.stringify({ username: username, password: password })));
+export const getCookie = () => JSON.parse(localStorage.getItem("user"));
+const removeCookie = () => localStorage.removeItem("user");
 
 // Getting data functions
 export const login = async (username, password) => {
