@@ -67,7 +67,8 @@ class Calendar extends React.Component {
       id: i.calendarItemID,
       title: i.title,
       input2: i.startTime,
-      input3: i.endTime
+      input3: i.endTime,
+      time: i.startTime.split("T")[1]
     }));
   };
 

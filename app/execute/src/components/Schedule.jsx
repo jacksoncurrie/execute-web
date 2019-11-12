@@ -253,7 +253,7 @@ class Schedule extends React.Component {
                           } else {
                             hour = startDate.getHours();
                             minute = startDate.getMinutes();
-                            displayHeight = (24 - hour - endDate.getHours()) * 50 - minute * (5 / 6);
+                            displayHeight = (24 - hour) * 50 - minute * (5 / 6);
                           }
                         } else if (
                           endDate.getFullYear() === this.state.loopDate.getFullYear() &&

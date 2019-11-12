@@ -107,7 +107,8 @@ class App extends React.Component {
     if (await AppLogic.login(e.target.username.value, e.target.password.value)) {
       this.closePopups();
       this.setState({
-        error: ""
+        error: "",
+        refreshRequired: !this.state.refreshRequired
       });
     } else {
       this.setState({
