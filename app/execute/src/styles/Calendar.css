@@ -124,7 +124,7 @@
   }
 
   .current-day {
-    width: 12.85714vw !important;
+    width: 12vw !important;
   }
 
   .calendar-grid {
@@ -132,7 +132,7 @@
   }
 
   .calendar-row > div {
-    font-size: 10px;;
+    font-size: 10px;
   }
 
   .dot {
