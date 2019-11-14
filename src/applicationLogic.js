@@ -1,5 +1,5 @@
 // API Constants
-const url = "http://192.168.1.68:8080/graphql";
+const url = "https://executewebapi.azurewebsites.net/graphql";
 const opts = {
   method: "POST",
   headers: { "Content-Type": "application/json" }
