@@ -1,0 +1,162 @@
+.schedule-container {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  position: relative;
+}
+
+.schedule-grid {
+  position: absolute;
+  display: grid;
+  border: 3px solid var(--color-fg);
+  grid-template-rows: 70px auto;
+  height: 90%;
+  max-width: 90%;
+}
+
+.schedule-header {
+  display: grid;
+  justify-content: space-evenly;
+  align-content: center;
+  grid-template-columns: 50px auto 50px;
+  border-bottom: 3px solid var(--color-fg);
+}
+
+.schedule-title > h2 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: var(--color-heading);
+}
+
+.schedule-header > button > img {
+  width: 15px;
+}
+
+.schedule-body {
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 70px auto;
+}
+
+.schedule-content {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(130px, 15vw));
+}
+
+.schedule-hours {
+  position: sticky;
+  left: 0;
+  background-color: var(--color-bg);
+  z-index: 1;
+  display: grid;
+  grid-template-rows: 50px repeat(24, 50px);
+  grid-template-columns: 1fr;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  border-right: 3px solid var(--color-fg);
+}
+
+.schedule-group {
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 1fr;
+  text-align: center;
+}
+
+.schedule-days {
+  position: sticky;
+  top: 0;
+  background-color: var(--color-bg);
+  font-size: 12px;
+  padding-top: 15px;
+  border-bottom: 3px solid var(--color-fg);
+}
+
+.schedule-group:hover {
+  cursor: pointer;
+}
+
+.empty-grid {
+  font-size: 12px;
+  margin: 0;
+  border-bottom: 3px solid var(--color-fg);
+  position: sticky;
+  top: 0;
+  background-color: var(--color-bg);
+}
+
+.schedule-group > div {
+  border-left: 3px solid var(--color-fg);
+}
+
+.schedule-group:first-child > div {
+  border-left: none;
+}
+
+.schedule-items-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.schedule-items {
+  width: 60%;
+  justify-self: center;
+  position: relative;
+}
+
+.schedule-item {
+  background-color: var(--color-highlight);
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+  top: 20px;
+  height: 100px;
+}
+
+.calendar-items {
+  width: 60%;
+  justify-self: center;
+  position: relative;
+}
+
+.calendar-item {
+  background-color: var(--color-heading);
+  position: absolute;
+  height: 350px;
+  width: 100%;
+  top: 20px;
+  z-index: -1;
+}
+
+.tasks-items {
+  width: 60%;
+  justify-self: center;
+  position: relative;
+}
+
+.tasks-item {
+  background-color: var(--color-link);
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+  top: 20px;
+  height: 50px;
+}
+
+@media only screen and (max-width: 600px) {
+  .schedule-header {
+    font-size: 12px;
+  }
+
+  .schedule-header > button > img {
+    width: 12px;
+  }
+}

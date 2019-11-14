@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700|Raleway:600&display=swap");
+
+:root {
+  --color-bg: #26303d;
+  --color-fg: #fff5ea;
+  --color-highlight: #ffcc63;
+  --color-heading: #ff714f;
+  --color-link: #23ad7b;
+  --font-heading: "Raleway", sans-serif;
+  --font-content: "Montserrat", sans-serif;
+  --fontweight-regular: 400;
+  --fontweight-bold: 600;
+  --fontweight-heading: 700;
+}
+
+* {
+  box-sizing: border-box !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-content);
+  font-weight: var(--fontweight-regular);
+}
+
+b,
+strong {
+  font-weight: var(--fontweight-bold);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--fontweight-heading);
+}
+
+button,
+input[type="submit"] {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--color-fg);
+}
+
+button:hover,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+button:active,
+input[type="submit"]:active {
+  opacity: 0.5;
+}

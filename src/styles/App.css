@@ -1,0 +1,123 @@
+.App {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 50px 1fr 50px;
+  height: 100vh;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+}
+
+header {
+  grid-area: header;
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  grid-template-rows: 1fr;
+  grid-template-areas: "left-header-group center-header-group right-header-group";
+  justify-items: center;
+  align-items: center;
+  box-shadow: 0 0 10px black;
+}
+
+.left-header-group {
+  grid-area: left-header-group;
+}
+
+.center-header-group {
+  grid-area: center-header-group;
+}
+
+.app-logo-img {
+  width: 30px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.app-logo-heading {
+  display: inline-block;
+  font-size: 25px;
+  margin: 0 0 0 10px;
+  vertical-align: middle;
+  letter-spacing: 3px;
+}
+
+.right-header-group {
+  grid-area: right-header-group;
+}
+
+.header-icon {
+  width: 20px;
+}
+
+main {
+  grid-area: main;
+  overflow-y: hidden;
+}
+
+footer {
+  grid-area: footer;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "left-footer-group center-footer-group right-footer-group";
+  justify-items: center;
+  align-items: center;
+  box-shadow: 0 0 10px black;
+}
+
+.left-footer-group {
+  grid-area: left-footer-group;
+}
+
+.center-footer-group {
+  grid-area: center-footer-group;
+}
+
+.right-footer-group {
+  grid-area: right-footer-group;
+}
+
+.footer-icon {
+  display: inline-block;
+  vertical-align: middle;
+  height: 30px;
+}
+
+.footer-group-caption {
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--color-link);
+  margin: 0 0 0 10px;
+  font-size: 16px;
+}
+
+.currentPage {
+  color: var(--color-fg);
+}
+
+@media only screen and (max-width: 600px) {
+  .App {
+    grid-template-rows: 40px 1fr 40px;
+  }
+
+  .footer-group-caption {
+    display: none;
+  }
+
+  .footer-icon {
+    height: 22px;
+  }
+
+  .header-icon {
+    width: 16px;
+  }
+
+  .app-logo-img {
+    width: 25px;
+  }
+
+  .app-logo-heading {
+    font-size: 20px;
+  }
+}

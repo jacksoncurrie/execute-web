@@ -1,0 +1,131 @@
+.tasks-list {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+.tasks-grid {
+  display: grid;
+  grid-template-rows: min-content auto;
+  height: 90%;
+}
+
+.tasks-titles {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.tasks-titles > div {
+  padding: 10px 0;
+  width: 22vw;
+  text-align: center;
+  border-top: 3px solid var(--color-fg);
+  border-left: 3px solid var(--color-fg);
+  border-bottom: 3px solid var(--color-fg);
+  color: var(--color-heading);
+}
+
+.tasks-titles > div:hover {
+  cursor: pointer;
+}
+
+.tasks-titles > div:last-child {
+  border-right: 3px solid var(--color-fg);
+}
+
+.tasks-content {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  overflow-y: overlay;
+  overflow-x: hidden;
+  border-bottom: 3px solid var(--color-fg);
+  height: calc(80vh - 130px);
+}
+
+.tasks-content > div {
+  width: 22vw;
+  text-align: center;
+  border-left: 3px solid var(--color-fg);
+}
+
+.tasks-content > div:last-child {
+  border-right: 3px solid var(--color-fg);
+}
+
+.tasks-content button {
+  display: block;
+  background-color: var(--color-link);
+  padding: 8px 5px;
+  width: 80%;
+  max-width: 220px;
+  margin: 20px auto;
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 600px) {
+  .tasks-list {
+    overflow-y: scroll;
+    align-items: start;
+    padding: 20px 0;
+    position: relative;
+    margin-bottom: 50px; 
+  }
+
+  .tasks-content {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto auto;
+    position: absolute;
+    top: 0;
+    height: 381px;
+    margin-top: 20px;
+    width: 90vw;
+    overflow: unset;
+    border: none;
+    margin-bottom: 50px; 
+  }
+
+  .tasks-grid {
+    grid-template-rows: auto;
+    overflow-y: overlay;
+    height: 1535px;
+    border-right: 3px solid var(--color-fg);
+    border-left: 3px solid var(--color-fg);
+    border-bottom: 3px solid var(--color-fg);
+  }
+  
+  .tasks-titles {
+    display: grid;
+    grid-template-columns: 90vw;
+    margin-bottom: 190px;
+    overflow: hidden;
+  }
+
+  .tasks-titles > div {
+    width: 100%;
+    text-align: center;
+    border-top: 3px solid var(--color-fg);
+    border-bottom: 3px solid var(--color-fg);
+    border-right: none !important;
+    border-left: none;
+    margin-bottom: 300px;
+    z-index: 2;
+  }
+
+  .tasks-content > div {
+    width: 100%;
+    margin-top: 83.8333px;
+    height: 300px;
+    border-right: none;
+    border-left: none;
+  }
+
+  .tasks-content > div:last-child {
+    border-right: none;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+}
