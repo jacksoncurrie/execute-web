@@ -24,3 +24,6 @@ yarn-error.log*
 
 #android
 /android
+
+#electron
+/execute-win32-x64
